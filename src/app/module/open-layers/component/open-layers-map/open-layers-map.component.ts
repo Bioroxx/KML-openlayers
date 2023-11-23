@@ -1,5 +1,5 @@
 import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/core';
-import Map, {MapOptions} from 'ol/Map';
+import Map from 'ol/Map';
 
 @Component({
   selector: 'app-open-layers-map',
@@ -8,17 +8,10 @@ import Map, {MapOptions} from 'ol/Map';
 })
 export class OpenLayersMapComponent implements AfterViewInit {
 
-  @Input() mapOptions: MapOptions;
+  @Input() map: Map;
   @ViewChild('openLayersMap') openLayersMap: ElementRef;
 
-  map: Map;
-
   ngAfterViewInit() {
-    this.map = new Map(this.mapOptions);
     this.map.setTarget(this.openLayersMap.nativeElement);
-  }
-
-  getMapInstance(): Map {
-    return this.map;
   }
 }

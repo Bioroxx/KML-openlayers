@@ -3,33 +3,29 @@
     <span>KML-OpenLayers</span>
   </div>
 </p-toolbar>
-<div class="mt-3">
-  <div class="container">
+<div class="p-3">
+  <div class="">
     <p-card>
       <div class="grid">
-        <div class="sm:col-12 md:col-9">
+        <div class="sm:col-12 md:col-8">
           <div class="map-container ">
-            <app-open-layers-map [mapOptions]="mapOptions"></app-open-layers-map>
+            <app-open-layers-map [map]="map"></app-open-layers-map>
           </div>
         </div>
-        <div class="sd:col-12 md:col-3 flex flex-column justify-content-between">
-
-          <p-dataView [value]="kmlLayers" class="flex flex-column">
-            <ng-template let-kmlLayer pTemplate="listItem">
-              <span>{{JSON.stringify(kmlLayer.className)}}</span>
-            </ng-template>
-          </p-dataView>
-
-          <div class="flex flex-column">
-            <input #kmlNameInput placeholder="Layer name" type="text" class="mb-2" pInputText/>
-            <input #kmlLinkInput placeholder="Link" type="text" pInputText/>
-            <div class="flex mt-3">
-              <p-button (onClick)="addKMLLayer(kmlNameInput.value, kmlLinkInput.value)">Import KML</p-button>
-            </div>
-          </div>
-
+        <div class="sd:col-12 md:col-4 flex flex-column">
+          <span class="text-xs">
+            {{lastMouseCoordinate ? ('Lon: ' + lastMouseCoordinate[0] + ' Lat: ' + lastMouseCoordinate[1]) : ''}}
+          </span>
+          <span class="text-xs">
+              {{lastMouseClickedCoordinate ? ('Lon: ' + lastMouseClickedCoordinate[0] + ' Lat: ' + lastMouseClickedCoordinate[1]) : ''}}
+          </span>
         </div>
       </div>
+
+      <p-divider></p-divider>
+
+      <app-kml-editor (addVectorLayer)="addVectorLayer($event)"></app-kml-editor>
+
     </p-card>
   </div>
 </div>

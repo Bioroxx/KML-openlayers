@@ -1,14 +1,13 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
-import {View} from "ol";
+import {AfterViewInit, Component} from '@angular/core';
+import {MapBrowserEvent, View} from "ol";
 import {OSM} from "ol/source";
 import TileLayer from "ol/layer/Tile";
 import Map, {MapOptions} from "ol/Map";
-import {OpenLayersMapComponent} from "./module/open-layers/component/open-layers-map/open-layers-map.component";
-import {fromLonLat} from "ol/proj";
+import {fromLonLat, toLonLat} from "ol/proj";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import {KML} from "ol/format";
-import {Geometry} from "ol/geom";
+import {Coordinate} from "ol/coordinate";
 
 @Component({
   selector: 'app-root',
@@ -17,37 +16,35 @@ import {Geometry} from "ol/geom";
 })
 export class AppComponent implements AfterViewInit {
 
-  @ViewChild(OpenLayersMapComponent) openLayersMapComponent: OpenLayersMapComponent;
+  private readonly COORDINATE_VIENNA = fromLonLat([16.363449, 48.210033]);
 
-  instance: Map;
-  kmlLayers: VectorLayer<VectorSource<Geometry>>[] = [];
+  map: Map;
 
-  mapOptions: MapOptions = {
-    layers: [
-      new TileLayer({
-        source: new OSM(),
-      })
-    ],
-    target: 'map',
-    view: new View({
-      center: [0, 0],
-      zoom: 2,
-      maxZoom: 18
-    })
+  lastMouseCoordinate: Coordinate;
+  lastMouseClickedCoordinate: Coordinate;
+
+  constructor() {
+
+    const mapOptions: MapOptions = {
+      layers: [
+        new TileLayer({
+          source: new OSM(),
+        })
+      ],
+      view: new View()
+    }
+
+    this.map = new Map(mapOptions);
+    this.registerEventListeners();
   }
 
   ngAfterViewInit() {
-    this.instance = this.openLayersMapComponent.getMapInstance();
     this.zoomIntoVienna();
-
-    const l = 'https://data.wien.gv.at/daten/geo?version=1.3.0&service=WMS&request=GetMap&crs=EPSG:4326&bbox=48.10,16.16,48.34,16.59&width=1&height=1&layers=ogdwien:BEZIRKSGRENZEOGD&styles=&format=application/vnd.google-earth.kml+xml'
-
-    // this.addKMLLayer(l);
   }
 
   addKMLLayer(name: string, url: string) {
     const vectorLayer = new VectorLayer({
-      opacity: 0.3,
+      opacity: 1.0,
       className: name,
       source: new VectorSource({
         url,
@@ -55,15 +52,45 @@ export class AppComponent implements AfterViewInit {
       }),
     });
 
-    //this.instance.addLayer(vectorLayer);
-    this.kmlLayers = this.kmlLayers.concat([vectorLayer]);
+    vectorLayer.set('name', name);
+    this.map.addLayer(vectorLayer);
+  }
+
+  addVectorLayer(vectorLayer: VectorLayer<VectorSource>) {
+    this.map.addLayer(vectorLayer);
   }
 
   zoomIntoVienna() {
-    const coordinate = fromLonLat([16.363449, 48.210033]);
-    this.instance.getView().setCenter(coordinate);
-    this.instance.getView().setZoom(12);
+    this.map.getView().setCenter(this.COORDINATE_VIENNA);
+    this.map.getView().setZoom(12);
   }
 
-  protected readonly JSON = JSON;
+  registerEventListeners() {
+
+    this.map.getView().on('change', (v) => {
+      console.log('View change', v);
+    });
+
+    this.map.on('loadstart', (v) => {
+      console.log('LoadStart', v);
+    });
+
+    this.map.on('loadend', (v) => {
+      console.log('LoadEnd', v);
+    });
+
+    this.map.on('pointermove', (event: MapBrowserEvent<any>) => {
+      if (event.dragging) {
+        return;
+      }
+      this.lastMouseCoordinate = toLonLat(event.coordinate);
+    });
+
+    this.map.on('click', (event: MapBrowserEvent<any>) => {
+      if (event.dragging) {
+        return;
+      }
+      this.lastMouseClickedCoordinate = toLonLat(event.coordinate);
+    });
+  }
 }

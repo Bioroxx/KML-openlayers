@@ -10,10 +10,17 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import {FormsModule} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {DataViewModule} from "primeng/dataview";
+import {DropdownModule} from "primeng/dropdown";
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {HttpClientModule} from "@angular/common/http";
+import {DividerModule} from "primeng/divider";
+import {KmlEditorComponent} from './component/kml-editor/kml-editor.component';
+import {SplitButtonModule} from "primeng/splitbutton";
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    KmlEditorComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +31,12 @@ import {DataViewModule} from "primeng/dataview";
     InputTextareaModule,
     FormsModule,
     InputTextModule,
-    DataViewModule
+    DataViewModule,
+    DropdownModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    DividerModule,
+    SplitButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
