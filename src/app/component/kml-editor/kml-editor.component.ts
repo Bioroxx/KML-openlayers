@@ -1,9 +1,9 @@
 import {Component, EventEmitter, Output} from '@angular/core';
 import {KmlFileService} from "../../service/kml-file.service";
 import {KMLFile} from "./model";
-import {KML} from "ol/format";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
+import {MyKML} from "../../module/open-layers/component/my-kml";
 
 @Component({
   selector: 'app-kml-editor',
@@ -68,7 +68,7 @@ export class KmlEditorComponent {
 
   @Output() addVectorLayer = new EventEmitter<VectorLayer<VectorSource>>();
 
-  KML = new KML();
+  KML = new MyKML();
 
   editorContent: string;
 

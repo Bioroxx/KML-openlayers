@@ -8,6 +8,10 @@ import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
 import {KML} from "ol/format";
 import {Coordinate} from "ol/coordinate";
+import {KmlFileService} from './service/kml-file.service';
+import {KMLParser} from 'kmljs';
+import {Kml} from './ol-kml-factory/elements/kml';
+import {OlKmlFactory} from './ol-kml-factory/ol-kml-factory';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +27,7 @@ export class AppComponent implements AfterViewInit {
   lastMouseCoordinate: Coordinate;
   lastMouseClickedCoordinate: Coordinate;
 
-  constructor() {
+  constructor(private kmlFileService: KmlFileService) {
 
     const mapOptions: MapOptions = {
       layers: [
@@ -35,11 +39,30 @@ export class AppComponent implements AfterViewInit {
     }
 
     this.map = new Map(mapOptions);
-    this.registerEventListeners();
+    //this.registerEventListeners();
   }
 
   ngAfterViewInit() {
     this.zoomIntoVienna();
+    this.parseKML();
+  }
+
+  parseKML() {
+
+    const simplePlacemark = './assets/kml-files/basic/placemark-vienna-first-district.kml';
+    const fullPlacemark = './assets/kml-files/BEZIRKSGRENZEOGD.kml'
+
+    const kmlFactory = new OlKmlFactory(this.map);
+    const kmlParser = new KMLParser(kmlFactory);
+    this.kmlFileService.getFileContentString(fullPlacemark).subscribe(kmlString => {
+
+      const kml: Kml = kmlParser.parse(kmlString)!;
+
+
+      console.log(kml);
+    });
+
+
   }
 
   addKMLLayer(name: string, url: string) {
@@ -69,14 +92,32 @@ export class AppComponent implements AfterViewInit {
 
     this.map.getView().on('change', (v) => {
       console.log('View change', v);
+
+      const layers = this.map.getLayers().getArray();
+
+      const vectorLayers = layers.filter(l => l instanceof VectorLayer) as VectorLayer<any>[];
+
+      const vectorLayer = vectorLayers[0];
+
+      if (!vectorLayer) {
+        return;
+      }
+
+      const source = vectorLayer.getSource() as VectorSource;
+
+      if (!source) {
+        return;
+      }
+
+      const features = source.getFeatures();
     });
 
     this.map.on('loadstart', (v) => {
-      console.log('LoadStart', v);
+      //console.log('LoadStart', v);
     });
 
     this.map.on('loadend', (v) => {
-      console.log('LoadEnd', v);
+      //console.log('LoadEnd', v);
     });
 
     this.map.on('pointermove', (event: MapBrowserEvent<any>) => {

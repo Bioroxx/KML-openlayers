@@ -19,6 +19,7 @@
           <span class="text-xs">
               {{lastMouseClickedCoordinate ? ('Lon: ' + lastMouseClickedCoordinate[0] + ' Lat: ' + lastMouseClickedCoordinate[1]) : ''}}
           </span>
+          <app-layer-tree [map]="map"></app-layer-tree>
         </div>
       </div>
 
