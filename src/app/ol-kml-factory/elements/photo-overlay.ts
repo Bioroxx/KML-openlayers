@@ -4,6 +4,7 @@ import {Point} from './point';
 import {ImagePyramid} from './image-pyramid';
 import {ViewVolume} from './view-volume';
 
+// @ts-ignore
 export class PhotoOverlay extends AbstractOverlayGroup implements PhotoOverlayType {
 
   rotation?: Angle180Type;

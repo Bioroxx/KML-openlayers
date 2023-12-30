@@ -1,6 +1,7 @@
 import {Angle180Type, ScreenOverlayType, Vec2Type} from 'kmljs';
 import {AbstractOverlayGroup} from './abstract-overlay-group';
 
+// @ts-ignore
 export class ScreenOverlay extends AbstractOverlayGroup implements ScreenOverlayType {
 
   overlayXY?: Vec2Type;

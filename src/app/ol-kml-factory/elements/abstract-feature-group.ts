@@ -27,7 +27,9 @@ export abstract class AbstractFeatureGroup extends AbstractObjectGroup implement
   extendedData?: ExtendedData;
 
   // OlRender
-  render?: () => void;
+  abstract isRendered?: boolean;
+  abstract render?: () => void;
+  abstract unRender?: () => void;
 
   constructor(abstractFeatureType: AbstractFeatureType) {
     super(abstractFeatureType);

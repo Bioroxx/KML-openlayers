@@ -6,11 +6,19 @@
         <span class="ml-2">{{node['label']}}</span>
       </div>
       <div>
-        <button pButton type="button"
+        <button *ngIf="!node['isRendered']"
+                pButton
+                type="button"
+                class="p-button p-button-secondary p-button-icon-only p-button-rounded p-button-text"
+                icon="pi pi-eye-slash"
+                (click)="onRender(node)">
+        </button>
+        <button *ngIf="node['isRendered']"
+                pButton
+                type="button"
                 class="p-button p-button-secondary p-button-icon-only p-button-rounded p-button-text"
                 icon="pi pi-eye"
-                (click)="onRender(node)"
-        >
+                (click)="onUnRender(node)">
         </button>
       </div>
     </div>
@@ -22,11 +30,19 @@
         <span class="ml-2">{{node['label']}}</span>
       </div>
       <div>
-        <button pButton type="button"
+        <button *ngIf="!node['isRendered']"
+                pButton
+                type="button"
+                class="p-button p-button-secondary p-button-icon-only p-button-rounded p-button-text"
+                icon="pi pi-eye-slash"
+                (click)="onRender(node)">
+        </button>
+        <button *ngIf="node['isRendered']"
+                pButton
+                type="button"
                 class="p-button p-button-secondary p-button-icon-only p-button-rounded p-button-text"
                 icon="pi pi-eye"
-                (click)="onRender(node)"
-        >
+                (click)="onUnRender(node)">
         </button>
       </div>
     </div>
@@ -38,11 +54,19 @@
         <span class="ml-2">{{node['label']}}</span>
       </div>
       <div>
-        <button pButton type="button"
+        <button *ngIf="!node['isRendered']"
+                pButton
+                type="button"
+                class="p-button p-button-secondary p-button-icon-only p-button-rounded p-button-text"
+                icon="pi pi-eye-slash"
+                (click)="onRender(node)">
+        </button>
+        <button *ngIf="node['isRendered']"
+                pButton
+                type="button"
                 class="p-button p-button-secondary p-button-icon-only p-button-rounded p-button-text"
                 icon="pi pi-eye"
-                (click)="onRender(node)"
-        >
+                (click)="onUnRender(node)">
         </button>
       </div>
     </div>

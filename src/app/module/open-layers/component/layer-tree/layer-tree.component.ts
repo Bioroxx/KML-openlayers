@@ -33,4 +33,13 @@ export class LayerTreeComponent {
       console.log('Could not render, because method render is undefined');
     }
   }
+
+  onUnRender(element: AbstractFeatureGroup) {
+
+    if (element.unRender) {
+      element.unRender();
+    } else {
+      console.log('Could not unRender, because method unRender is undefined');
+    }
+  }
 }

@@ -27,10 +27,22 @@ export class Folder extends AbstractContainerGroup implements FolderType {
     return this.feature;
   };
 
+  override get isRendered(): boolean {
+    return this.feature.some(f => f.isRendered);
+  }
+
   override render = () => {
     this.feature.forEach(f => {
       if (f.render) {
         f.render();
+      }
+    });
+  }
+
+  override unRender = () => {
+    this.feature.forEach(f => {
+      if (f.unRender) {
+        f.unRender();
       }
     });
   }
