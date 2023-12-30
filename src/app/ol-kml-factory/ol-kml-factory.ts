@@ -58,9 +58,7 @@ export class OlKmlFactory extends KmlFactory {
     if (placemark.geometry && placemark.geometry instanceof MultiGeometry) {
       placemark.olFeature = new OlFeature({geometry: placemark.geometry.olGeometry});
     }
-
-    placemark.render();
-
+    
     return placemark;
   }
 

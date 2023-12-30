@@ -19,14 +19,9 @@
           <span class="text-xs">
               {{lastMouseClickedCoordinate ? ('Lon: ' + lastMouseClickedCoordinate[0] + ' Lat: ' + lastMouseClickedCoordinate[1]) : ''}}
           </span>
-          <app-layer-tree [map]="map"></app-layer-tree>
+          <app-layer-tree [rootNode]="treeRootNode"></app-layer-tree>
         </div>
       </div>
-
-      <p-divider></p-divider>
-
-      <app-kml-editor (addVectorLayer)="addVectorLayer($event)"></app-kml-editor>
-
     </p-card>
   </div>
 </div>

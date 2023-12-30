@@ -5,8 +5,9 @@ import {Region} from './region';
 import {AbstractStyleSelectorGroup} from './abstract-style-selector-group';
 import {AbstractTimePrimitiveGroup} from './abstract-time-primitive-group';
 import {AbstractViewGroup} from './abstract-view-group';
+import {OlRender} from '../ol-render';
 
-export abstract class AbstractFeatureGroup extends AbstractObjectGroup implements AbstractFeatureType {
+export abstract class AbstractFeatureGroup extends AbstractObjectGroup implements AbstractFeatureType, OlRender {
 
   name?: string;
   visibility?: boolean;
@@ -24,6 +25,9 @@ export abstract class AbstractFeatureGroup extends AbstractObjectGroup implement
   styleSelector?: AbstractStyleSelectorGroup[];
   region?: Region;
   extendedData?: ExtendedData;
+
+  // OlRender
+  render?: () => void;
 
   constructor(abstractFeatureType: AbstractFeatureType) {
     super(abstractFeatureType);

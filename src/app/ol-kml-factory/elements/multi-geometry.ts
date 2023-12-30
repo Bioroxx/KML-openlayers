@@ -10,7 +10,6 @@ export class MultiGeometry extends AbstractGeometryGroup implements MultiGeometr
 
   constructor(multiGeometryType: MultiGeometryType) {
     super(multiGeometryType);
-
     this.geometry = multiGeometryType.geometry;
   }
 }

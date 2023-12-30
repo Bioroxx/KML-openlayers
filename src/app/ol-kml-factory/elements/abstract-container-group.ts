@@ -6,5 +6,4 @@ export abstract class AbstractContainerGroup extends AbstractFeatureGroup implem
   constructor(abstractContainerType: AbstractContainerType) {
     super(abstractContainerType);
   }
-
 }

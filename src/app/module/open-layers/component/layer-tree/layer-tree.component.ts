@@ -1,7 +1,6 @@
 import {Component, Input} from '@angular/core';
-import Map from 'ol/Map';
-import VectorLayer from "ol/layer/Vector";
-import VectorSource from "ol/source/Vector";
+import {MenuItem, TreeNode} from 'primeng/api';
+import {AbstractFeatureGroup} from '../../../../ol-kml-factory/elements/abstract-feature-group';
 
 @Component({
   selector: 'app-layer-tree',
@@ -10,39 +9,28 @@ import VectorSource from "ol/source/Vector";
 })
 export class LayerTreeComponent {
 
-  _map: Map;
+  _rootNode: TreeNode<AbstractFeatureGroup>[];
 
-  @Input()
-  set map(value: Map) {
-
-    console.log('Set map: ', value);
-
-    if (!value) {
-      return;
-    }
-
-    this._map = value;
-    //this._map.getView().on('change', this.render);
+  get rootNode(): TreeNode<AbstractFeatureGroup>[] {
+    return this._rootNode;
   }
 
-  render() {
+  @Input() set rootNode(value: TreeNode<AbstractFeatureGroup>[]) {
+    console.log('Setting: ', value);
+    this._rootNode = value;
+  }
 
-    const vectorLayers = this.map.getLayers().getArray().filter(l => l instanceof VectorLayer) as VectorLayer<any>[];
+  contextMenuItems: MenuItem[] = [
+    {label: 'View', icon: 'pi pi-search', command: (event) => console.log(event)},
+    {label: 'Unselect', icon: 'pi pi-times', command: (event) => console.log('Unselect')}
+  ];
 
-    const vectorLayer = vectorLayers[0];
+  onRender(element: AbstractFeatureGroup) {
 
-    if (!vectorLayer) {
-      return;
+    if (element.render) {
+      element.render();
+    } else {
+      console.log('Could not render, because method render is undefined');
     }
-
-    const source = vectorLayer.getSource() as VectorSource;
-
-    if (!source) {
-      return;
-    }
-
-    const features = source.getFeatures();
-
-    console.log('Render');
   }
 }

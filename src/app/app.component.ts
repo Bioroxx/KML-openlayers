@@ -12,6 +12,8 @@ import {KmlFileService} from './service/kml-file.service';
 import {KMLParser} from 'kmljs';
 import {Kml} from './ol-kml-factory/elements/kml';
 import {OlKmlFactory} from './ol-kml-factory/ol-kml-factory';
+import {TreeNode} from 'primeng/api';
+import {AbstractFeatureGroup} from './ol-kml-factory/elements/abstract-feature-group';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +28,8 @@ export class AppComponent implements AfterViewInit {
 
   lastMouseCoordinate: Coordinate;
   lastMouseClickedCoordinate: Coordinate;
+
+  treeRootNode: TreeNode<AbstractFeatureGroup>[];
 
   constructor(private kmlFileService: KmlFileService) {
 
@@ -58,6 +62,9 @@ export class AppComponent implements AfterViewInit {
 
       const kml: Kml = kmlParser.parse(kmlString)!;
 
+      //kml.feature!.render!();
+
+      this.treeRootNode = [kml.feature! as TreeNode<AbstractFeatureGroup>];
 
       console.log(kml);
     });

@@ -1,8 +1,6 @@
-import Map from "ol/Map";
+import {TreeNode} from 'primeng/api';
+import {AbstractFeatureGroup} from './elements/abstract-feature-group';
 
-export interface OlRender {
-
-  render(): void;
-
-  olMap: Map;
+export interface OlRender extends TreeNode<AbstractFeatureGroup> {
+  render?: () => void;
 }

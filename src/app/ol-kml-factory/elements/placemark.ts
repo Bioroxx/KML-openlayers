@@ -1,13 +1,12 @@
 import {PlacemarkType} from 'kmljs';
 import {AbstractFeatureGroup} from './abstract-feature-group';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
-import {OlRender} from '../ol-render';
 import Map from 'ol/Map';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import {Feature as OlFeature} from 'ol';
 
-export class Placemark extends AbstractFeatureGroup implements PlacemarkType, OlRender {
+export class Placemark extends AbstractFeatureGroup implements PlacemarkType {
 
   geometry?: AbstractGeometryGroup;
 
@@ -20,7 +19,23 @@ export class Placemark extends AbstractFeatureGroup implements PlacemarkType, Ol
     this.geometry = placemarkType.geometry;
   }
 
-  render(): void {
+  get label() {
+    return this.name;
+  }
+
+  get data() {
+    return this;
+  }
+
+  get type() {
+    return 'placemark';
+  }
+
+  get children() {
+    return [];
+  };
+
+  override render = () => {
 
     if (!this.olFeature) {
       return;
