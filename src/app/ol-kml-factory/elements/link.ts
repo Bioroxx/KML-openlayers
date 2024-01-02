@@ -1,4 +1,4 @@
-import {LinkType, RefreshModeEnumType, ViewRefreshModeEnumType} from 'kmljs';
+import {LinkType, RefreshModeEnumType, ViewRefreshModeEnumType} from '@bioroxx/kmljs';
 import {AbstractObjectGroup} from './abstract-object-group';
 
 export class Link extends AbstractObjectGroup implements LinkType {

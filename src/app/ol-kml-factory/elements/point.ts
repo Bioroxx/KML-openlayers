@@ -1,4 +1,4 @@
-import {CoordinatesType, PointType} from 'kmljs';
+import {CoordinatesType, PointType} from '@bioroxx/kmljs';
 import {AltitudeModeGroup} from './altitude-mode-group';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
 import {Point as OlPoint} from 'ol/geom';

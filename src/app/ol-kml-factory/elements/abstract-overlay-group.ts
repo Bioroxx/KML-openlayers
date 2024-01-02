@@ -1,5 +1,5 @@
 import {AbstractFeatureGroup} from './abstract-feature-group';
-import {AbstractOverlayType, ColorType} from 'kmljs';
+import {AbstractOverlayType, ColorType} from '@bioroxx/kmljs';
 import {Icon} from './icon';
 
 export abstract class AbstractOverlayGroup extends AbstractFeatureGroup implements AbstractOverlayType {

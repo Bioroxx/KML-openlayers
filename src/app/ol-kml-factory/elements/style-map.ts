@@ -1,4 +1,4 @@
-import {StyleMapType} from 'kmljs';
+import {StyleMapType} from '@bioroxx/kmljs';
 import {AbstractStyleSelectorGroup} from './abstract-style-selector-group';
 import {Pair} from './pair';
 

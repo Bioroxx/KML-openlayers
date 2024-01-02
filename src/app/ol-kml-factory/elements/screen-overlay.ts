@@ -1,7 +1,6 @@
-import {Angle180Type, ScreenOverlayType, Vec2Type} from 'kmljs';
+import {Angle180Type, ScreenOverlayType, Vec2Type} from '@bioroxx/kmljs';
 import {AbstractOverlayGroup} from './abstract-overlay-group';
 
-// @ts-ignore
 export class ScreenOverlay extends AbstractOverlayGroup implements ScreenOverlayType {
 
   overlayXY?: Vec2Type;
@@ -18,5 +17,17 @@ export class ScreenOverlay extends AbstractOverlayGroup implements ScreenOverlay
     this.rotationXY = screenOverlayType.rotationXY;
     this.size = screenOverlayType.size;
     this.rotation = screenOverlayType.rotation;
+  }
+
+  override get isRendered(): boolean {
+    return false;
+  }
+
+  override render = () => {
+
+  }
+
+  override unRender = () => {
+
   }
 }

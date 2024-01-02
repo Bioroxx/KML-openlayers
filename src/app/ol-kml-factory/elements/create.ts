@@ -1,4 +1,4 @@
-import {CreateType} from 'kmljs';
+import {CreateType} from '@bioroxx/kmljs';
 import {AbstractContainerGroup} from './abstract-container-group';
 
 export class Create implements CreateType {

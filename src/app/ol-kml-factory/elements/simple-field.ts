@@ -1,4 +1,4 @@
-import {SimpleFieldType} from 'kmljs';
+import {SimpleFieldType} from '@bioroxx/kmljs';
 
 export class SimpleField implements SimpleFieldType {
 

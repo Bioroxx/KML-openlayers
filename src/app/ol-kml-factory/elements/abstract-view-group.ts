@@ -1,5 +1,5 @@
 import {AbstractObjectGroup} from './abstract-object-group';
-import {AbstractViewType} from 'kmljs';
+import {AbstractViewType} from '@bioroxx/kmljs';
 
 export abstract class AbstractViewGroup extends AbstractObjectGroup implements AbstractViewType {
 

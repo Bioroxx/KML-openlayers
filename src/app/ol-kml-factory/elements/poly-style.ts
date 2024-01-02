@@ -1,4 +1,4 @@
-import {PolyStyleType} from 'kmljs';
+import {PolyStyleType} from '@bioroxx/kmljs';
 import {AbstractColorStyleGroup} from './abstract-color-style-group';
 
 export class PolyStyle extends AbstractColorStyleGroup implements PolyStyleType {

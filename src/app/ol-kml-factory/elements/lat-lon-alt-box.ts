@@ -1,4 +1,4 @@
-import {LatLonAltBoxType} from 'kmljs';
+import {LatLonAltBoxType} from '@bioroxx/kmljs';
 import {AbstractLatLonBox} from './abstract-lat-lon-box';
 import {AltitudeModeGroup} from './altitude-mode-group';
 

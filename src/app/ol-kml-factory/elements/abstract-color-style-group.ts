@@ -1,5 +1,5 @@
 import {AbstractSubStyleGroup} from './abstract-sub-style-group';
-import {AbstractColorStyleType, ColorModeEnumType, ColorType} from 'kmljs';
+import {AbstractColorStyleType, ColorModeEnumType, ColorType} from '@bioroxx/kmljs';
 
 export abstract class AbstractColorStyleGroup extends AbstractSubStyleGroup implements AbstractColorStyleType {
 

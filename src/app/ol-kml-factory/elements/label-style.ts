@@ -1,4 +1,4 @@
-import {LabelStyleType} from 'kmljs';
+import {LabelStyleType} from '@bioroxx/kmljs';
 import {AbstractColorStyleGroup} from './abstract-color-style-group';
 
 export class LabelStyle extends AbstractColorStyleGroup implements LabelStyleType {

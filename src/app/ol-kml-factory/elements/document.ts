@@ -1,4 +1,4 @@
-import {DocumentType, Schema} from 'kmljs';
+import {DocumentType, Schema} from '@bioroxx/kmljs';
 import {AbstractContainerGroup} from './abstract-container-group';
 import {AbstractFeatureGroup} from './abstract-feature-group';
 

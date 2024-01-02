@@ -1,4 +1,4 @@
-import {PlacemarkType} from 'kmljs';
+import {PlacemarkType} from '@bioroxx/kmljs';
 import {AbstractFeatureGroup} from './abstract-feature-group';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
 import Map from 'ol/Map';

@@ -1,4 +1,4 @@
-import {AnyURI, PairType, StyleStateEnumType} from 'kmljs';
+import {AnyURI, PairType, StyleStateEnumType} from '@bioroxx/kmljs';
 import {AbstractObjectGroup} from './abstract-object-group';
 import {AbstractStyleSelectorGroup} from './abstract-style-selector-group';
 

@@ -1,4 +1,4 @@
-import {DateTimeType, TimeSpanType} from 'kmljs';
+import {DateTimeType, TimeSpanType} from '@bioroxx/kmljs';
 import {AbstractTimePrimitiveGroup} from './abstract-time-primitive-group';
 
 export class TimeSpan extends AbstractTimePrimitiveGroup implements TimeSpanType {

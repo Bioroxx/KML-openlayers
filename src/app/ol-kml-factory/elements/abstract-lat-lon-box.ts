@@ -1,5 +1,5 @@
 import {AbstractObjectGroup} from './abstract-object-group';
-import {AbstractLatLonBoxType, Angle180Type} from 'kmljs';
+import {AbstractLatLonBoxType, Angle180Type} from '@bioroxx/kmljs';
 
 export abstract class AbstractLatLonBox extends AbstractObjectGroup implements AbstractLatLonBoxType {
 

@@ -1,4 +1,4 @@
-import {StyleType} from 'kmljs';
+import {StyleType} from '@bioroxx/kmljs';
 import {AbstractStyleSelectorGroup} from './abstract-style-selector-group';
 import {ListStyle} from './list-style';
 import {BalloonStyle} from './balloon-style';

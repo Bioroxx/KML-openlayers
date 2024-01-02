@@ -1,4 +1,4 @@
-import {Angle360Type, BasicLinkType, IconStyleType, Vec2Type} from 'kmljs';
+import {Angle360Type, BasicLinkType, IconStyleType, Vec2Type} from '@bioroxx/kmljs';
 import {AbstractColorStyleGroup} from './abstract-color-style-group';
 
 export class IconStyle extends AbstractColorStyleGroup implements IconStyleType {
@@ -7,7 +7,7 @@ export class IconStyle extends AbstractColorStyleGroup implements IconStyleType 
   heading?: Angle360Type;
   icon?: BasicLinkType;
   hotSpot?: Vec2Type;
-  
+
   constructor(iconStyleType: IconStyleType) {
     super(iconStyleType);
 

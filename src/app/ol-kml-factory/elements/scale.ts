@@ -1,4 +1,4 @@
-import {ScaleType} from 'kmljs';
+import {ScaleType} from '@bioroxx/kmljs';
 import {AbstractObjectGroup} from './abstract-object-group';
 
 export class Scale extends AbstractObjectGroup implements ScaleType {

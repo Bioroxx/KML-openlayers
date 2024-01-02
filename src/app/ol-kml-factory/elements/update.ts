@@ -1,4 +1,4 @@
-import {AnyURI, UpdateType} from 'kmljs';
+import {AnyURI, UpdateType} from '@bioroxx/kmljs';
 import {Delete} from './delete';
 import {Create} from './create';
 import {Change} from './change';

@@ -1,4 +1,4 @@
-import {KmlType} from 'kmljs';
+import {KmlType} from '@bioroxx/kmljs';
 import {NetworkLinkControl} from './network-link-control';
 import {AbstractFeatureGroup} from './abstract-feature-group';
 

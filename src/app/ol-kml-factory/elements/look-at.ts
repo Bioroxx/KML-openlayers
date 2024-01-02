@@ -1,4 +1,4 @@
-import {AltitudeModeGroup, Angle180Type, Angle360Type, Angle90Type, LookAtType} from 'kmljs';
+import {AltitudeModeGroup, Angle180Type, Angle360Type, Angle90Type, LookAtType} from '@bioroxx/kmljs';
 import {AbstractViewGroup} from './abstract-view-group';
 
 export class LookAt extends AbstractViewGroup implements LookAtType {

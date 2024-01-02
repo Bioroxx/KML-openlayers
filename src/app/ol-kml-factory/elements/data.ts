@@ -1,4 +1,4 @@
-import {DataType} from 'kmljs';
+import {DataType} from '@bioroxx/kmljs';
 import {AbstractObjectGroup} from './abstract-object-group';
 
 export class Data extends AbstractObjectGroup implements DataType {

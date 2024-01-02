@@ -1,4 +1,4 @@
-import {MultiGeometryType} from 'kmljs';
+import {MultiGeometryType} from '@bioroxx/kmljs';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
 import {OlGeometryCollection} from '../helper/ol-types';
 

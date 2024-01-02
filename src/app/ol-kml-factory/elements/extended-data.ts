@@ -1,4 +1,4 @@
-import {ExtendedDataType} from 'kmljs';
+import {ExtendedDataType} from '@bioroxx/kmljs';
 import {Data} from './data';
 import {SchemaData} from './schema-data';
 

@@ -1,4 +1,4 @@
-import {RegionType} from 'kmljs';
+import {RegionType} from '@bioroxx/kmljs';
 import {AbstractObjectGroup} from './abstract-object-group';
 import {Lod} from './lod';
 import {LatLonAltBox} from './lat-lon-alt-box';

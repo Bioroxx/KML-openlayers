@@ -1,4 +1,4 @@
-import {AliasType, AnyURI} from 'kmljs';
+import {AliasType, AnyURI} from '@bioroxx/kmljs';
 import {AbstractObjectGroup} from './abstract-object-group';
 
 export class Alias extends AbstractObjectGroup implements AliasType {

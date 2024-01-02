@@ -1,4 +1,4 @@
-import {GridOriginEnumType, ImagePyramidType} from 'kmljs';
+import {GridOriginEnumType, ImagePyramidType} from '@bioroxx/kmljs';
 import {AbstractObjectGroup} from './abstract-object-group';
 
 export class ImagePyramid extends AbstractObjectGroup implements ImagePyramidType {

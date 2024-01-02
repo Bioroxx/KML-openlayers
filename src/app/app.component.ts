@@ -9,7 +9,7 @@ import VectorSource from "ol/source/Vector";
 import {KML} from "ol/format";
 import {Coordinate} from "ol/coordinate";
 import {KmlFileService} from './service/kml-file.service';
-import {KMLParser} from 'kmljs';
+import {KMLParser} from '@bioroxx/kmljs';
 import {Kml} from './ol-kml-factory/elements/kml';
 import {OlKmlFactory} from './ol-kml-factory/ol-kml-factory';
 import {TreeNode} from 'primeng/api';
@@ -68,8 +68,6 @@ export class AppComponent implements AfterViewInit {
 
       console.log(kml);
     });
-
-
   }
 
   addKMLLayer(name: string, url: string) {

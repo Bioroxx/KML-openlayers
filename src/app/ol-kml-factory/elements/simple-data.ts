@@ -1,4 +1,4 @@
-import {SimpleDataType} from 'kmljs';
+import {SimpleDataType} from '@bioroxx/kmljs';
 
 export class SimpleData implements SimpleDataType {
 

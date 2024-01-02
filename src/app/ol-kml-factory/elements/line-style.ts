@@ -1,4 +1,4 @@
-import {LineStyleType} from 'kmljs';
+import {LineStyleType} from '@bioroxx/kmljs';
 import {AbstractColorStyleGroup} from './abstract-color-style-group';
 
 export class LineStyle extends AbstractColorStyleGroup implements LineStyleType {

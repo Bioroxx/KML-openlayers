@@ -1,5 +1,5 @@
 import {AbstractObjectGroup} from './abstract-object-group';
-import {AbstractStyleSelectorType} from 'kmljs';
+import {AbstractStyleSelectorType} from '@bioroxx/kmljs';
 
 export abstract class AbstractStyleSelectorGroup extends AbstractObjectGroup implements AbstractStyleSelectorType {
 

@@ -1,4 +1,4 @@
-import {DateTimeType, NetworkLinkControlType} from 'kmljs';
+import {DateTimeType, NetworkLinkControlType} from '@bioroxx/kmljs';
 import {AbstractViewGroup} from './abstract-view-group';
 import {Update} from './update';
 

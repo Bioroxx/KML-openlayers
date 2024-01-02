@@ -1,4 +1,4 @@
-import {BalloonStyleType, ColorType, DisplayModeEnumType} from 'kmljs';
+import {BalloonStyleType, ColorType, DisplayModeEnumType} from '@bioroxx/kmljs';
 import {AbstractSubStyleGroup} from './abstract-sub-style-group';
 
 export class BalloonStyle extends AbstractSubStyleGroup implements BalloonStyleType {

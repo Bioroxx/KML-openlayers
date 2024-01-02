@@ -1,4 +1,4 @@
-import {PolygonType} from 'kmljs';
+import {PolygonType} from '@bioroxx/kmljs';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
 import {AltitudeModeGroup} from './altitude-mode-group';
 import {Boundary} from '../helper/boundary';

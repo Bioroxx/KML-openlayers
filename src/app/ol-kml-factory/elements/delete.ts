@@ -1,4 +1,4 @@
-import {DeleteType} from 'kmljs';
+import {DeleteType} from '@bioroxx/kmljs';
 import {AbstractFeatureGroup} from './abstract-feature-group';
 
 export class Delete implements DeleteType {

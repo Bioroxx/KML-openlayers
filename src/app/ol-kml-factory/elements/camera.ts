@@ -1,4 +1,4 @@
-import {Angle180Type, Angle360Type, Angle90Type, CameraType} from 'kmljs';
+import {Angle180Type, Angle360Type, Angle90Type, CameraType} from '@bioroxx/kmljs';
 import {AbstractViewGroup} from './abstract-view-group';
 import {AltitudeModeGroup} from './altitude-mode-group';
 

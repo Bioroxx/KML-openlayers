@@ -1,4 +1,4 @@
-import {CoordinatesType, LinearRingType} from 'kmljs';
+import {CoordinatesType, LinearRingType} from '@bioroxx/kmljs';
 import {AltitudeModeGroup} from './altitude-mode-group';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
 import {LinearRing as OlLinearRing} from 'ol/geom';

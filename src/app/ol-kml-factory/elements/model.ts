@@ -1,4 +1,4 @@
-import {ModelType} from 'kmljs';
+import {ModelType} from '@bioroxx/kmljs';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
 import {ResourceMap} from './resource-map';
 import {Link} from './link';

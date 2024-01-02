@@ -1,7 +1,7 @@
 import {
   DocumentType,
   FolderType,
-  KmlFactory,
+  KMLFactory,
   KmlType,
   LinearRingType,
   LineStringType,
@@ -9,7 +9,7 @@ import {
   PlacemarkType,
   PointType,
   PolygonType
-} from 'kmljs';
+} from '@bioroxx/kmljs';
 import {Kml} from './elements/kml';
 import {Folder} from './elements/folder';
 import {Document} from './elements/document';
@@ -24,7 +24,7 @@ import {OlFeature, OlGeometryCollection, OlLinearRing, OlLineString, OlPoint, Ol
 import {MultiGeometry} from './elements/multi-geometry';
 import {LineString} from './elements/line-string';
 
-export class OlKmlFactory extends KmlFactory {
+export class OlKmlFactory extends KMLFactory {
 
   constructor(private map: Map) {
     super();
@@ -58,7 +58,7 @@ export class OlKmlFactory extends KmlFactory {
     if (placemark.geometry && placemark.geometry instanceof MultiGeometry) {
       placemark.olFeature = new OlFeature({geometry: placemark.geometry.olGeometry});
     }
-    
+
     return placemark;
   }
 

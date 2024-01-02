@@ -1,4 +1,4 @@
-import {Angle180Type, LatLonBoxType} from 'kmljs';
+import {Angle180Type, LatLonBoxType} from '@bioroxx/kmljs';
 import {AbstractLatLonBox} from './abstract-lat-lon-box';
 
 export class LatLonBox extends AbstractLatLonBox implements LatLonBoxType {

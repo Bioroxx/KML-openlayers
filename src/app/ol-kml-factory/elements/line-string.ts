@@ -1,4 +1,4 @@
-import {CoordinatesType, LineStringType} from 'kmljs';
+import {CoordinatesType, LineStringType} from '@bioroxx/kmljs';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
 import {AltitudeModeGroup} from './altitude-mode-group';
 import {OlLineString} from '../helper/ol-types';

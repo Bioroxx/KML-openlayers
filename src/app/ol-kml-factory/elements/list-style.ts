@@ -1,4 +1,4 @@
-import {ColorType, ListItemTypeEnumType, ListStyleType} from 'kmljs';
+import {ColorType, ListItemTypeEnumType, ListStyleType} from '@bioroxx/kmljs';
 import {ItemIcon} from './item-icon';
 import {AbstractSubStyleGroup} from './abstract-sub-style-group';
 

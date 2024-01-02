@@ -1,4 +1,4 @@
-import {AbstractObjectType, ID, NCName} from 'kmljs';
+import {AbstractObjectType, ID, NCName} from '@bioroxx/kmljs';
 
 export abstract class AbstractObjectGroup implements AbstractObjectType {
 

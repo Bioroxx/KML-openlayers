@@ -1,4 +1,4 @@
-import {FolderType} from 'kmljs';
+import {FolderType} from '@bioroxx/kmljs';
 import {AbstractContainerGroup} from './abstract-container-group';
 import {AbstractFeatureGroup} from './abstract-feature-group';
 
