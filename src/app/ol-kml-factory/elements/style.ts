@@ -6,6 +6,7 @@ import {PolyStyle} from './poly-style';
 import {LineStyle} from './line-style';
 import {LabelStyle} from './label-style';
 import {IconStyle} from './icon-style';
+import {OlStyle} from '../helper/ol-types';
 
 export class Style extends AbstractStyleSelectorGroup implements StyleType {
 
@@ -15,6 +16,8 @@ export class Style extends AbstractStyleSelectorGroup implements StyleType {
   polyStyle?: PolyStyle;
   balloonStyle?: BalloonStyle;
   listStyle?: ListStyle;
+
+  olStyle?: OlStyle;
 
   constructor(styleType: StyleType) {
     super(styleType);

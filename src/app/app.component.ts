@@ -6,7 +6,6 @@ import Map, {MapOptions} from "ol/Map";
 import {fromLonLat, toLonLat} from "ol/proj";
 import VectorLayer from "ol/layer/Vector";
 import VectorSource from "ol/source/Vector";
-import {KML} from "ol/format";
 import {Coordinate} from "ol/coordinate";
 import {KmlFileService} from './service/kml-file.service';
 import {KMLParser} from '@bioroxx/kmljs';
@@ -14,6 +13,7 @@ import {Kml} from './ol-kml-factory/elements/kml';
 import {OlKmlFactory} from './ol-kml-factory/ol-kml-factory';
 import {TreeNode} from 'primeng/api';
 import {AbstractFeatureGroup} from './ol-kml-factory/elements/abstract-feature-group';
+import {KmljsOlFormat} from './ol-kml-factory/kmljs-ol-format';
 
 @Component({
   selector: 'app-root',
@@ -49,6 +49,7 @@ export class AppComponent implements AfterViewInit {
   ngAfterViewInit() {
     this.zoomIntoVienna();
     this.parseKML();
+    this.addKMLLayer();
   }
 
   parseKML() {
@@ -61,26 +62,24 @@ export class AppComponent implements AfterViewInit {
     this.kmlFileService.getFileContentString(fullPlacemark).subscribe(kmlString => {
 
       const kml: Kml = kmlParser.parse(kmlString)!;
-
-      //kml.feature!.render!();
-
       this.treeRootNode = [kml.feature! as TreeNode<AbstractFeatureGroup>];
 
       console.log(kml);
     });
   }
 
-  addKMLLayer(name: string, url: string) {
+  addKMLLayer() {
+
+    const url = './assets/kml-files/basic/placemark-vienna-first-district.kml'
+
     const vectorLayer = new VectorLayer({
       opacity: 1.0,
-      className: name,
       source: new VectorSource({
         url,
-        format: new KML(),
+        format: new KmljsOlFormat(),
       }),
     });
 
-    vectorLayer.set('name', name);
     this.map.addLayer(vectorLayer);
   }
 

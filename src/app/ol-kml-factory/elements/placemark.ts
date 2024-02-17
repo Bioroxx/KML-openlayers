@@ -1,27 +1,29 @@
 import {PlacemarkType} from '@bioroxx/kmljs';
 import {AbstractFeatureGroup} from './abstract-feature-group';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
-import Map from 'ol/Map';
-import VectorLayer from 'ol/layer/Vector';
-import VectorSource from 'ol/source/Vector';
-import {Feature as OlFeature} from 'ol';
 import {v4 as uuidv4} from 'uuid';
 import {LAYER_ID_KEY} from '../ol-render';
+import {OlFeature, OlMap, OlSelect, OlVectorLayer, OlVectorSource} from '../helper/ol-types';
+import {BalloonControl} from '../helper/balloon-control';
 
 export class Placemark extends AbstractFeatureGroup implements PlacemarkType {
 
   geometry?: AbstractGeometryGroup;
 
-  olMap: Map;
-  olFeature?: OlFeature;
+  readonly featureId = uuidv4();
+  olMap: OlMap;
+  olVectorSource: OlVectorSource;
+  olVectorLayer: OlVectorLayer<OlVectorSource>;
+  olFeature: OlFeature;
+  olSelect: OlSelect;
+
+  balloonControl?: BalloonControl;
 
   constructor(placemarkType: PlacemarkType) {
     super(placemarkType);
 
     this.geometry = placemarkType.geometry;
   }
-
-  renderId = uuidv4();
 
   get label() {
     return this.name;
@@ -40,36 +42,30 @@ export class Placemark extends AbstractFeatureGroup implements PlacemarkType {
   };
 
   override get isRendered(): boolean {
-    return !!this.getRenderedLayer()
+    return this.olMap.getLayers()
+        .getArray()
+        .some(layer => layer.get(LAYER_ID_KEY) === this.featureId)
   }
 
   override render = () => {
-
-    if (!this.olFeature) {
-      return;
-    }
-
-    const vectorSource = new VectorSource({features: [this.olFeature]});
-    const vectorLayer = new VectorLayer({source: vectorSource});
-    vectorLayer.set(LAYER_ID_KEY, this.renderId);
-    this.olMap.addLayer(vectorLayer);
+    this.olMap.addLayer(this.olVectorLayer);
+    this.olMap.addInteraction(this.olSelect);
   }
 
   override unRender = () => {
+    this.olMap.removeInteraction(this.olSelect);
+    this.olMap.removeLayer(this.olVectorLayer);
+  }
 
-    const layerToRemove = this.getRenderedLayer();
-
-    if (!layerToRemove) {
-      return;
+  onSelected() {
+    if (this.balloonControl) {
+      this.olMap.addControl(this.balloonControl);
     }
+  };
 
-    this.olMap.removeLayer(layerToRemove);
+  onDeselected() {
+    if (this.balloonControl) {
+      this.olMap.removeControl(this.balloonControl);
+    }
   }
-
-  private getRenderedLayer() {
-    return this.olMap.getLayers()
-      .getArray()
-      .find(layer => layer.get(LAYER_ID_KEY) === this.renderId);
-  }
-
 }

@@ -16,7 +16,6 @@ export class LayerTreeComponent {
   }
 
   @Input() set rootNode(value: TreeNode<AbstractFeatureGroup>[]) {
-    console.log('Setting: ', value);
     this._rootNode = value;
   }
 
