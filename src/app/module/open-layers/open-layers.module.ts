@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {OpenLayersMapComponent} from './component/open-layers-map/open-layers-map.component';
-import {LayerTreeComponent} from './component/layer-tree/layer-tree.component';
+import {ListViewComponent} from './component/list-view/list-view.component';
 import {TreeModule} from 'primeng/tree';
 import {ContextMenuModule} from 'primeng/contextmenu';
 import {ButtonModule} from 'primeng/button';
@@ -9,11 +9,11 @@ import {ButtonModule} from 'primeng/button';
 @NgModule({
   declarations: [
     OpenLayersMapComponent,
-    LayerTreeComponent
+    ListViewComponent
   ],
   exports: [
     OpenLayersMapComponent,
-    LayerTreeComponent
+    ListViewComponent
   ],
   imports: [
     CommonModule,

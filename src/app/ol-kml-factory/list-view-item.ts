@@ -3,9 +3,9 @@ import {AbstractFeatureGroup} from './elements/abstract-feature-group';
 
 export const LAYER_ID_KEY = 'layer-id';
 
-export interface OlRender extends TreeNode<AbstractFeatureGroup> {
+export interface ListViewItem extends TreeNode<AbstractFeatureGroup> {
 
-  isRendered?: boolean;
-  render?: () => void;
-  unRender?: () => void;
+  isVisible?: boolean;
+  setVisible?: () => void;
+  setInvisible?: () => void;
 }

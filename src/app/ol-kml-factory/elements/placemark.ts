@@ -2,7 +2,6 @@ import {PlacemarkType} from '@bioroxx/kmljs';
 import {AbstractFeatureGroup} from './abstract-feature-group';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
 import {v4 as uuidv4} from 'uuid';
-import {LAYER_ID_KEY} from '../ol-render';
 import {OlFeature, OlMap, OlSelect, OlVectorLayer, OlVectorSource} from '../helper/ol-types';
 import {BalloonControl} from '../helper/balloon-control';
 
@@ -41,20 +40,28 @@ export class Placemark extends AbstractFeatureGroup implements PlacemarkType {
     return [];
   };
 
-  override get isRendered(): boolean {
-    return this.olMap.getLayers()
-        .getArray()
-        .some(layer => layer.get(LAYER_ID_KEY) === this.featureId)
-  }
-
-  override render = () => {
+  override addLayer = () => {
     this.olMap.addLayer(this.olVectorLayer);
     this.olMap.addInteraction(this.olSelect);
   }
 
-  override unRender = () => {
+  override removeLayer = () => {
+    this.onDeselected();
     this.olMap.removeInteraction(this.olSelect);
     this.olMap.removeLayer(this.olVectorLayer);
+  }
+
+  override get isVisible(): boolean {
+    return this.olVectorLayer.getVisible();
+  }
+
+  override setVisible = () => {
+    this.olVectorLayer.setVisible(true);
+  }
+
+  override setInvisible = () => {
+    this.onDeselected();
+    this.olVectorLayer.setVisible(false);
   }
 
   onSelected() {

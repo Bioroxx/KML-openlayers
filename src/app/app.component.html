@@ -3,25 +3,35 @@
     <span>KML-OpenLayers</span>
   </div>
 </p-toolbar>
-<div class="p-3">
-  <div class="">
-    <p-card>
-      <div class="grid">
-        <div class="sm:col-12 md:col-8">
-          <div class="map-container ">
-            <app-open-layers-map [map]="map"></app-open-layers-map>
-          </div>
-        </div>
-        <div class="sd:col-12 md:col-4 flex flex-column">
-          <span class="text-xs">
-            {{lastMouseCoordinate ? ('Lon: ' + lastMouseCoordinate[0] + ' Lat: ' + lastMouseCoordinate[1]) : ''}}
-          </span>
-          <span class="text-xs">
-              {{lastMouseClickedCoordinate ? ('Lon: ' + lastMouseClickedCoordinate[0] + ' Lat: ' + lastMouseClickedCoordinate[1]) : ''}}
-          </span>
-          <app-layer-tree [rootNode]="treeRootNode"></app-layer-tree>
-        </div>
+<div class="p-3 grid">
+
+  <div class="sm:col-12 md:col-4">
+    <p-card header="List View" styleClass="h-full">
+      <div class="w-full" style="height: 70vh">
+        <app-list-view [kml]="kml"></app-list-view>
       </div>
+
+      <ng-template pTemplate="footer">
+        <p-button (onClick)="clearMapFromAdditionalLayers()">Clear</p-button>
+      </ng-template>
+
+    </p-card>
+  </div>
+
+  <div class="sm:col-12 md:col-8">
+    <p-card header="Map">
+      <div class="map-container">
+        <app-open-layers-map [map]="map" class="h-full w-full"></app-open-layers-map>
+      </div>
+    </p-card>
+  </div>
+
+  <div class="col-12">
+    <p-card header="KML Editor">
+      <app-kml-editor
+          (loadKmlWithOpenLayers)="importKmlWithOpenLayersDefaultImplementation($event)"
+          (loadKmlWithPrototype)="importKml($event)">
+      </app-kml-editor>
     </p-card>
   </div>
 </div>

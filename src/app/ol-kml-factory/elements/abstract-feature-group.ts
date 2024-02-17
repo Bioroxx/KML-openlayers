@@ -5,9 +5,9 @@ import {Region} from './region';
 import {AbstractStyleSelectorGroup} from './abstract-style-selector-group';
 import {AbstractTimePrimitiveGroup} from './abstract-time-primitive-group';
 import {AbstractViewGroup} from './abstract-view-group';
-import {OlRender} from '../ol-render';
+import {ListViewItem} from '../list-view-item';
 
-export abstract class AbstractFeatureGroup extends AbstractObjectGroup implements AbstractFeatureType, OlRender {
+export abstract class AbstractFeatureGroup extends AbstractObjectGroup implements AbstractFeatureType, ListViewItem {
 
   name?: string;
   visibility?: boolean;
@@ -26,10 +26,12 @@ export abstract class AbstractFeatureGroup extends AbstractObjectGroup implement
   region?: Region;
   extendedData?: ExtendedData;
 
-  // OlRender
-  abstract isRendered?: boolean;
-  abstract render?: () => void;
-  abstract unRender?: () => void;
+  abstract addLayer?: () => void;
+  abstract removeLayer?: () => void;
+
+  abstract isVisible?: boolean;
+  abstract setVisible?: () => void;
+  abstract setInvisible?: () => void;
 
   constructor(abstractFeatureType: AbstractFeatureType) {
     super(abstractFeatureType);

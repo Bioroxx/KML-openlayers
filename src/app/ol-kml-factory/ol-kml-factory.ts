@@ -58,13 +58,15 @@ import {IconStyle} from './elements/icon-style';
 import {BalloonControl} from './helper/balloon-control';
 import {StyleMap} from './elements/style-map';
 import {click} from 'ol/events/condition';
-import {LAYER_ID_KEY} from './ol-render';
+import {LAYER_ID_KEY} from './list-view-item';
 import {Pair} from './elements/pair';
 
 export class OlKmlFactory extends KMLFactory {
 
   COLOR_TRANSPARENT = [0, 0, 0, 0];
   DEFAULT_ICON_URL = './assets/images/pin_icon.png';
+  DEFAULT_ICON_WIDTH = 32;
+  DEFAULT_ICON_HEIGHT = 32;
 
   constructor(private map: OlMap) {
     super();
@@ -81,15 +83,17 @@ export class OlKmlFactory extends KMLFactory {
   override createFolder(obj: FolderType): FolderType {
     return new Folder(obj);
   }
-  
+
   override createPlacemark(obj: PlacemarkType): PlacemarkType {
 
     const placemark = new Placemark(obj);
 
+    const visible = placemark.visibility ?? true;
+
     placemark.olMap = this.map;
     placemark.olFeature = new OlFeature({geometry: placemark.geometry?.olGeometry});
     placemark.olVectorSource = new OlVectorSource({features: [placemark.olFeature]});
-    placemark.olVectorLayer = new OlVectorLayer({source: placemark.olVectorSource});
+    placemark.olVectorLayer = new OlVectorLayer({source: placemark.olVectorSource, visible});
     placemark.olVectorLayer.set(LAYER_ID_KEY, placemark.featureId);
 
     // Styling
@@ -323,9 +327,10 @@ export class OlKmlFactory extends KMLFactory {
       anchorXUnits: iconAnchorXUnits,
       anchorYUnits: iconAnchorYUnits,
       crossOrigin: 'anonymous',
-      scale: iconScale,
       color: iconColor,
       rotation: iconRotation,
+      width: this.DEFAULT_ICON_WIDTH * iconScale,
+      height: this.DEFAULT_ICON_HEIGHT * iconScale,
       src: iconSrc,
     });
 

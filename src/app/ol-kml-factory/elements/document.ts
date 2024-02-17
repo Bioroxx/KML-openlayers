@@ -30,22 +30,38 @@ export class Document extends AbstractContainerGroup implements DocumentType {
     return this.feature;
   };
 
-  override get isRendered(): boolean {
-    return this.feature.some(f => f.isRendered);
-  }
-
-  override render = () => {
+  override addLayer = () => {
     this.feature.forEach(f => {
-      if (f.render) {
-        f.render();
+      if (f.addLayer) {
+        f.addLayer();
       }
     });
   }
 
-  override unRender = () => {
+  override removeLayer = () => {
     this.feature.forEach(f => {
-      if (f.unRender) {
-        f.unRender();
+      if (f.removeLayer) {
+        f.removeLayer();
+      }
+    });
+  }
+
+  override get isVisible(): boolean {
+    return this.feature.some(f => f.isVisible);
+  }
+
+  override setVisible = () => {
+    this.feature.forEach(f => {
+      if (f.setVisible) {
+        f.setVisible();
+      }
+    });
+  }
+
+  override setInvisible = () => {
+    this.feature.forEach(f => {
+      if (f.setInvisible) {
+        f.setInvisible();
       }
     });
   }

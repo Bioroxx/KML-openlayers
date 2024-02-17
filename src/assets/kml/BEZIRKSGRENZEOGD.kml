@@ -31,10 +31,10 @@
     <Style id="style_purple">
       <IconStyle>
         <color>00ffffff</color>
-        <scale>0.2</scale>
+        <scale>1.0</scale>
         <heading>0.0</heading>
         <Icon>
-          <href>./assets/images/pin_icon.png</href>
+          <href>/assets/images/pin_icon.png</href>
         </Icon>
         <hotSpot x="0.5" y="0.0"></hotSpot>
       </IconStyle>
@@ -55,10 +55,10 @@
     <Style id="style_green">
       <IconStyle>
         <color>00ffffff</color>
-        <scale>0.2</scale>
+        <scale>1.0</scale>
         <heading>0.0</heading>
         <Icon>
-          <href>./assets/images/pin_icon.png</href>
+          <href>/assets/images/pin_icon.png</href>
         </Icon>
         <hotSpot x="0.5" y="0.0"></hotSpot>
       </IconStyle>
@@ -82,7 +82,7 @@
         <scale>0.4</scale>
         <heading>0.0</heading>
         <Icon>
-          <href>./assets/images/pin_icon.png</href>
+          <href>/assets/images/pin_icon.png</href>
         </Icon>
       </IconStyle>
       <LabelStyle>
@@ -2905,7 +2905,7 @@
                 <scale>0.2</scale>
                 <heading>0.0</heading>
                 <Icon>
-                  <href>./assets/images/pin_icon.png</href>
+                  <href>/assets/images/pin_icon.png</href>
                 </Icon>
                 <hotSpot x="0.5" y="0.0"></hotSpot>
               </IconStyle>
