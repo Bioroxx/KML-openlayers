@@ -58,7 +58,6 @@ import {IconStyle} from './elements/icon-style';
 import {BalloonControl} from './helper/balloon-control';
 import {StyleMap} from './elements/style-map';
 import {click} from 'ol/events/condition';
-import {LAYER_ID_KEY} from './list-view-item';
 import {Pair} from './elements/pair';
 
 export class OlKmlFactory extends KMLFactory {
@@ -94,7 +93,6 @@ export class OlKmlFactory extends KMLFactory {
     placemark.olFeature = new OlFeature({geometry: placemark.geometry?.olGeometry});
     placemark.olVectorSource = new OlVectorSource({features: [placemark.olFeature]});
     placemark.olVectorLayer = new OlVectorLayer({source: placemark.olVectorSource, visible});
-    placemark.olVectorLayer.set(LAYER_ID_KEY, placemark.featureId);
 
     // Styling
     let normalStyle: Style | undefined = undefined;

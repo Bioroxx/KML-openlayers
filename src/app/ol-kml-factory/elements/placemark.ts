@@ -1,7 +1,6 @@
 import {PlacemarkType} from '@bioroxx/kmljs';
 import {AbstractFeatureGroup} from './abstract-feature-group';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
-import {v4 as uuidv4} from 'uuid';
 import {OlFeature, OlMap, OlSelect, OlVectorLayer, OlVectorSource} from '../helper/ol-types';
 import {BalloonControl} from '../helper/balloon-control';
 
@@ -9,7 +8,6 @@ export class Placemark extends AbstractFeatureGroup implements PlacemarkType {
 
   geometry?: AbstractGeometryGroup;
 
-  readonly featureId = uuidv4();
   olMap: OlMap;
   olVectorSource: OlVectorSource;
   olVectorLayer: OlVectorLayer<OlVectorSource>;
