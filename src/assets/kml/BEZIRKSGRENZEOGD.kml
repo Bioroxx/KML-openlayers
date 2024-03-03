@@ -51,6 +51,11 @@
         <colorMode>normal</colorMode>
         <outline>1</outline>
       </PolyStyle>
+      <BalloonStyle>
+        <bgColor>77ff00ff</bgColor>
+        <textColor>ff000000</textColor>
+        <displayMode>default</displayMode>
+      </BalloonStyle>
     </Style>
     <Style id="style_green">
       <IconStyle>

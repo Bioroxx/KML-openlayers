@@ -6,7 +6,7 @@ export class ListStyle extends AbstractSubStyleGroup implements ListStyleType {
 
   listItemType?: ListItemTypeEnumType;
   bgColor?: ColorType;
-  itemIcon?: ItemIcon;
+  itemIcon?: ItemIcon[];
   maxSnippetLines?: number;
 
   constructor(listStyleType: ListStyleType) {

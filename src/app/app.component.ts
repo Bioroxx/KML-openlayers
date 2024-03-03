@@ -11,6 +11,8 @@ import {KMLParser} from '@bioroxx/kmljs';
 import {Kml} from './ol-kml-factory/elements/kml';
 import {OlKmlFactory} from './ol-kml-factory/ol-kml-factory';
 import {KML} from 'ol/format';
+import {BalloonControl} from './ol-kml-factory/helper/balloon-control';
+import {OlSelect} from './ol-kml-factory/helper/ol-types';
 
 @Component({
   selector: 'app-root',
@@ -77,13 +79,16 @@ export class AppComponent implements AfterViewInit {
 
   clearMapFromAdditionalLayers() {
     const vectorLayers = this.map.getLayers().getArray().filter(l => !(l instanceof TileLayer));
-    const interactions = this.map.getInteractions();
-    const controls = this.map.getControls();
+    const interactions = this.map.getInteractions().getArray().filter((i) => i instanceof OlSelect);
+    const controls = this.map.getControls().getArray().filter((c) => c instanceof BalloonControl);
 
     console.log('VectorLayers', vectorLayers);
     console.log('Interactions', interactions);
     console.log('Controls', controls);
-    //vectorLayers.forEach((l) => this.map.removeLayer(l));
+
+    vectorLayers.forEach((l) => this.map.removeLayer(l));
+    interactions.forEach((i) => this.map.removeInteraction(i));
+    controls.forEach((c) => this.map.removeControl(c));
   }
 
   importDefaultDataSet() {

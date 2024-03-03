@@ -2,6 +2,7 @@ import {
   AbstractFeatureType,
   ColorModeEnumType,
   ColorType,
+  DisplayModeEnumType,
   DocumentType,
   FolderType,
   IconStyleType,
@@ -125,17 +126,25 @@ export class OlKmlFactory extends KMLFactory {
 
     // Balloon
     if (placemark.description) {
-      placemark.balloonControl = new BalloonControl(this.getEntityReplacedString(placemark.description, placemark));
+      placemark.balloonControl = new BalloonControl({
+        ...normalStyle?.balloonStyle,
+        displayMode: normalStyle?.balloonStyle?.displayMode ?? DisplayModeEnumType.default,
+        text: this.getEntityReplacedString(placemark.description, placemark),
+      });
     } else if (normalStyle?.balloonStyle?.text) {
-      placemark.balloonControl = new BalloonControl(this.getEntityReplacedString(normalStyle.balloonStyle.text, placemark));
+      placemark.balloonControl = new BalloonControl({
+        ...normalStyle?.balloonStyle,
+        displayMode: normalStyle?.balloonStyle?.displayMode ?? DisplayModeEnumType.default,
+        text: this.getEntityReplacedString(normalStyle.balloonStyle.text, placemark)
+      });
     }
 
     // Click interaction
     placemark.olSelect = new OlSelect({
-          condition: click,
-          style: highlightStyle?.olStyle,
-          layers: [placemark.olVectorLayer]
-        }
+        condition: click,
+        style: highlightStyle?.olStyle,
+        layers: [placemark.olVectorLayer]
+      }
     );
     placemark.olSelect.on('select', (event) => {
       if (event.selected.length) {
@@ -167,8 +176,8 @@ export class OlKmlFactory extends KMLFactory {
     if (polygon.outerBoundaryIs?.olGeometry) {
 
       const innerBoundaryCoordinatesArray = (polygon.innerBoundaryIs ?? [])
-          .filter(i => i !== undefined && i.olGeometry !== undefined)
-          .map(i => i.olGeometry!.getCoordinates());
+        .filter(i => i !== undefined && i.olGeometry !== undefined)
+        .map(i => i.olGeometry!.getCoordinates());
 
       const coordinates = [
         polygon.outerBoundaryIs.olGeometry.getCoordinates(),
@@ -214,8 +223,8 @@ export class OlKmlFactory extends KMLFactory {
     if (multiGeometry.geometry) {
 
       const olGeometryCollection = multiGeometry.geometry
-          .filter(m => m?.olGeometry !== undefined)
-          .map(m => m.olGeometry!);
+        .filter(m => m?.olGeometry !== undefined)
+        .map(m => m.olGeometry!);
 
       multiGeometry.olGeometry = new OlGeometryCollection(olGeometryCollection)
     }
@@ -251,12 +260,12 @@ export class OlKmlFactory extends KMLFactory {
 
   private getInlineStyle(feature: AbstractFeatureType): Style | undefined {
     return feature.styleSelector?.find(abstractStyleSelectorType =>
-        (abstractStyleSelectorType instanceof Style)) as Style | undefined;
+      (abstractStyleSelectorType instanceof Style)) as Style | undefined;
   }
 
   private getInlineStyleMap(feature: AbstractFeatureType): StyleMap | undefined {
     return feature.styleSelector?.find(abstractStyleSelectorType =>
-        (abstractStyleSelectorType instanceof StyleMap)) as StyleMap | undefined;
+      (abstractStyleSelectorType instanceof StyleMap)) as StyleMap | undefined;
   }
 
   private getSharedStyleById(styleUrl?: string): Style | undefined {
@@ -266,7 +275,7 @@ export class OlKmlFactory extends KMLFactory {
     }
 
     return this.getSharedStyle()
-        .find(s => ('#' + s.id) === styleUrl && s instanceof Style) as Style | undefined;
+      .find(s => ('#' + s.id) === styleUrl && s instanceof Style) as Style | undefined;
   }
 
   private getSharedStyleMapById(styleUrl?: string): StyleMap | undefined {
@@ -276,7 +285,7 @@ export class OlKmlFactory extends KMLFactory {
     }
 
     return this.getSharedStyle()
-        .find(s => ('#' + s.id) === styleUrl && s instanceof StyleMap) as StyleMap | undefined;
+      .find(s => ('#' + s.id) === styleUrl && s instanceof StyleMap) as StyleMap | undefined;
   }
 
   private getOlStyleFromStyleType(styleType: StyleType) {
