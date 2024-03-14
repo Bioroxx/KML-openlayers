@@ -6,6 +6,7 @@ import {AbstractStyleSelectorGroup} from './abstract-style-selector-group';
 import {AbstractTimePrimitiveGroup} from './abstract-time-primitive-group';
 import {AbstractViewGroup} from './abstract-view-group';
 import {ListViewItem} from '../list-view-item';
+import BaseLayer from 'ol/layer/Base';
 
 export abstract class AbstractFeatureGroup extends AbstractObjectGroup implements AbstractFeatureType, ListViewItem {
 
@@ -26,14 +27,13 @@ export abstract class AbstractFeatureGroup extends AbstractObjectGroup implement
   region?: Region;
   extendedData?: ExtendedData;
 
-  abstract addLayer?: () => void;
-  abstract removeLayer?: () => void;
+  abstract olLayer?: BaseLayer;
 
   abstract isVisible?: boolean;
   abstract setVisible?: () => void;
   abstract setInvisible?: () => void;
 
-  constructor(abstractFeatureType: AbstractFeatureType) {
+  protected constructor(abstractFeatureType: AbstractFeatureType) {
     super(abstractFeatureType);
 
     this.name = abstractFeatureType.name;

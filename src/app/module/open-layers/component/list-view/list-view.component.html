@@ -1,4 +1,12 @@
-<p-tree [value]="rootNode" class="h-full w-full" [contextMenu]="cm" scrollHeight="60vh">
+<p-tree
+    class="h-full w-full"
+    scrollHeight="60vh"
+    selectionMode="single"
+    [value]="rootNode"
+    (onNodeSelect)="onNodeSelect($event)"
+    (onNodeUnselect)="onNodeUnselect($event)"
+    (focusout)="onFocusOut()"
+    [contextMenu]="cm">
   <ng-template let-node pTemplate="document">
     <div class="flex justify-content-between align-items-center">
       <div class="flex align-items-center">
@@ -11,14 +19,14 @@
                 type="button"
                 class="p-button p-button-secondary p-button-icon-only p-button-rounded p-button-text"
                 icon="pi pi-eye-slash"
-                (click)="onRender(node)">
+                (click)="onSetVisible(node)">
         </button>
         <button *ngIf="node['isVisible']"
                 pButton
                 type="button"
                 class="p-button p-button-secondary p-button-icon-only p-button-rounded p-button-text"
                 icon="pi pi-eye"
-                (click)="onUnRender(node)">
+                (click)="onSetInvisible(node)">
         </button>
       </div>
     </div>
@@ -35,14 +43,14 @@
                 type="button"
                 class="p-button p-button-secondary p-button-icon-only p-button-rounded p-button-text"
                 icon="pi pi-eye-slash"
-                (click)="onRender(node)">
+                (click)="onSetVisible(node)">
         </button>
         <button *ngIf="node['isVisible']"
                 pButton
                 type="button"
                 class="p-button p-button-secondary p-button-icon-only p-button-rounded p-button-text"
                 icon="pi pi-eye"
-                (click)="onUnRender(node)">
+                (click)="onSetInvisible(node)">
         </button>
       </div>
     </div>
@@ -59,14 +67,14 @@
                 type="button"
                 class="p-button p-button-secondary p-button-icon-only p-button-rounded p-button-text"
                 icon="pi pi-eye-slash"
-                (click)="onRender(node)">
+                (click)="onSetVisible(node)">
         </button>
         <button *ngIf="node['isVisible']"
                 pButton
                 type="button"
                 class="p-button p-button-secondary p-button-icon-only p-button-rounded p-button-text"
                 icon="pi pi-eye"
-                (click)="onUnRender(node)">
+                (click)="onSetInvisible(node)">
         </button>
       </div>
     </div>

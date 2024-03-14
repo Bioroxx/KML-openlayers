@@ -18,3 +18,6 @@ export {IconAnchorUnits as OlIconAnchorUnits} from 'ol/style/Icon';
 export {IconOrigin as OlIconOrigin} from 'ol/style/Icon';
 export {Select as OlSelect} from 'ol/interaction';
 export {Control as OlControl} from 'ol/control';
+export {FeatureLike as OlFeatureLike} from 'ol/Feature';
+export {StyleFunction as OlStyleFunction} from 'ol/style/Style';
+export {Text as OlText} from 'ol/style';

@@ -1,5 +1,6 @@
 import {
   AbstractFeatureType,
+  BalloonStyleType,
   ColorModeEnumType,
   ColorType,
   DisplayModeEnumType,
@@ -10,12 +11,15 @@ import {
   KmlType,
   LinearRingType,
   LineStringType,
+  LineStyle,
   LineStyleType,
   MultiGeometryType,
+  Pair,
   PairType,
   PlacemarkType,
   PointType,
   PolygonType,
+  PolyStyle,
   PolyStyleType,
   StyleMapType,
   StyleStateEnumType,
@@ -34,7 +38,9 @@ import {
   OlColor,
   OlCoordinate,
   OlFeature,
+  OlFeatureLike,
   OlFill,
+  OlGeometry,
   OlGeometryCollection,
   OlIcon,
   OlIconAnchorUnits,
@@ -44,29 +50,31 @@ import {
   OlMap,
   OlPoint,
   OlPolygon,
-  OlSelect,
   OlStroke,
   OlStyle,
+  OlStyleFunction,
+  OlText,
   OlVectorLayer,
   OlVectorSource
 } from './helper/ol-types';
 import {MultiGeometry} from './elements/multi-geometry';
 import {LineString} from './elements/line-string';
 import {Style} from './elements/style';
-import {LineStyle} from './elements/line-style';
-import {PolyStyle} from './elements/poly-style';
-import {IconStyle} from './elements/icon-style';
-import {BalloonControl} from './helper/balloon-control';
 import {StyleMap} from './elements/style-map';
-import {click} from 'ol/events/condition';
-import {Pair} from './elements/pair';
+import RenderFeature from 'ol/render/Feature';
+import {IconStyle} from './elements/icon-style';
+import LayerGroup from 'ol/layer/Group';
+import BaseLayer from 'ol/layer/Base';
 
 export class OlKmlFactory extends KMLFactory {
 
   COLOR_TRANSPARENT = [0, 0, 0, 0];
+  COLOR_WHITE = [255, 255, 255, 1.0];
+  COLOR_BLACK = [0, 0, 0, 1.0];
   DEFAULT_ICON_URL = './assets/images/pin_icon.png';
   DEFAULT_ICON_WIDTH = 32;
   DEFAULT_ICON_HEIGHT = 32;
+  DEFAULT_LABEL_FONT = '16px Calibri,sans-serif';
 
   constructor(private map: OlMap) {
     super();
@@ -77,29 +85,31 @@ export class OlKmlFactory extends KMLFactory {
   }
 
   override createDocument(obj: DocumentType): DocumentType {
-    return new Document(obj);
+    const document = new Document(obj);
+    const layers = document.feature
+        .map(feature => feature.olLayer)
+        .filter(olLayer => !!olLayer) as BaseLayer[];
+    document.olLayer = new LayerGroup({layers});
+    return document;
   }
 
   override createFolder(obj: FolderType): FolderType {
-    return new Folder(obj);
+    const folder = new Folder(obj);
+    const layers = folder.feature
+        .map(feature => feature.olLayer)
+        .filter(olLayer => !!olLayer) as BaseLayer[];
+    folder.olLayer = new LayerGroup({layers});
+    return folder;
   }
 
   override createPlacemark(obj: PlacemarkType): PlacemarkType {
 
     const placemark = new Placemark(obj);
-
-    const visible = placemark.visibility ?? true;
-
-    placemark.olMap = this.map;
-    placemark.olFeature = new OlFeature({geometry: placemark.geometry?.olGeometry});
-    placemark.olVectorSource = new OlVectorSource({features: [placemark.olFeature]});
-    placemark.olVectorLayer = new OlVectorLayer({source: placemark.olVectorSource, visible});
+    const feature = new OlFeature({geometry: placemark.geometry?.olGeometry});
 
     // Styling
-    let normalStyle: Style | undefined = undefined;
+    let normalStyle: Style | undefined = this.getInlineStyle(placemark) ?? this.getSharedStyleById(placemark.styleUrl);
     let highlightStyle: Style | undefined = undefined;
-
-    normalStyle = this.getInlineStyle(placemark) ?? this.getSharedStyleById(placemark.styleUrl);
 
     if (!normalStyle) {
 
@@ -107,53 +117,46 @@ export class OlKmlFactory extends KMLFactory {
       const normalPair = styleMap?.pair.find(p => p.key === StyleStateEnumType.normal);
       const highlightPair = styleMap?.pair.find(p => p.key === StyleStateEnumType.highlight);
 
-      // A nested StyleMap is not supported
       if (normalPair && normalPair.styleSelector && normalPair.styleSelector instanceof Style) {
         normalStyle = normalPair.styleSelector;
-      } else if (normalPair) {
+      } else if (normalPair && normalPair.styleUrl) {
         normalStyle = this.getSharedStyleById(normalPair.styleUrl);
       }
 
-      // A nested StyleMap is not supported
       if (highlightPair && highlightPair.styleSelector && highlightPair.styleSelector instanceof Style) {
         highlightStyle = highlightPair.styleSelector;
-      } else if (highlightPair) {
+      } else if (highlightPair && highlightPair.styleUrl) {
         highlightStyle = this.getSharedStyleById(highlightPair.styleUrl);
       }
     }
 
-    placemark.olFeature.setStyle(normalStyle?.olStyle);
+    const normalStyleFunction = this.getStyleFunction(placemark.name ?? '', normalStyle);
+    const highlightStyleFunction = highlightStyle ? this.getStyleFunction(placemark.name ?? '', highlightStyle) : normalStyleFunction;
 
-    // Balloon
+    feature.setStyle(normalStyleFunction);
+    feature.set('normalStyle', normalStyleFunction);
+    feature.set('highlightStyle', highlightStyleFunction);
+
+    // Create enriched BalloonStyleType
+    let balloonStyle: BalloonStyleType | undefined = undefined;
     if (placemark.description) {
-      placemark.balloonControl = new BalloonControl({
+      balloonStyle = {
         ...normalStyle?.balloonStyle,
         displayMode: normalStyle?.balloonStyle?.displayMode ?? DisplayModeEnumType.default,
         text: this.getEntityReplacedString(placemark.description, placemark),
-      });
+      };
     } else if (normalStyle?.balloonStyle?.text) {
-      placemark.balloonControl = new BalloonControl({
+      balloonStyle = {
         ...normalStyle?.balloonStyle,
         displayMode: normalStyle?.balloonStyle?.displayMode ?? DisplayModeEnumType.default,
         text: this.getEntityReplacedString(normalStyle.balloonStyle.text, placemark)
-      });
+      };
     }
+    feature.set('balloonStyle', balloonStyle);
 
-    // Click interaction
-    placemark.olSelect = new OlSelect({
-        condition: click,
-        style: highlightStyle?.olStyle,
-        layers: [placemark.olVectorLayer]
-      }
-    );
-    placemark.olSelect.on('select', (event) => {
-      if (event.selected.length) {
-        placemark.onSelected();
-      } else {
-        placemark.onDeselected();
-      }
-    });
-
+    const visible = placemark.visibility ?? true;
+    const vectorSource = new OlVectorSource({features: [feature]});
+    placemark.olLayer = new OlVectorLayer({source: vectorSource, visible});
     return placemark;
   }
 
@@ -176,8 +179,8 @@ export class OlKmlFactory extends KMLFactory {
     if (polygon.outerBoundaryIs?.olGeometry) {
 
       const innerBoundaryCoordinatesArray = (polygon.innerBoundaryIs ?? [])
-        .filter(i => i !== undefined && i.olGeometry !== undefined)
-        .map(i => i.olGeometry!.getCoordinates());
+          .filter(i => i !== undefined && i.olGeometry !== undefined)
+          .map(i => i.olGeometry!.getCoordinates());
 
       const coordinates = [
         polygon.outerBoundaryIs.olGeometry.getCoordinates(),
@@ -223,8 +226,8 @@ export class OlKmlFactory extends KMLFactory {
     if (multiGeometry.geometry) {
 
       const olGeometryCollection = multiGeometry.geometry
-        .filter(m => m?.olGeometry !== undefined)
-        .map(m => m.olGeometry!);
+          .filter(m => m?.olGeometry !== undefined)
+          .map(m => m.olGeometry!);
 
       multiGeometry.olGeometry = new OlGeometryCollection(olGeometryCollection)
     }
@@ -233,9 +236,7 @@ export class OlKmlFactory extends KMLFactory {
   }
 
   override createStyle(obj: StyleType): StyleType {
-    const style = new Style(obj);
-    style.olStyle = this.getOlStyleFromStyleType(style);
-    return style;
+    return new Style(obj);
   }
 
   override createStyleMap(obj: StyleMapType): StyleMapType {
@@ -260,12 +261,12 @@ export class OlKmlFactory extends KMLFactory {
 
   private getInlineStyle(feature: AbstractFeatureType): Style | undefined {
     return feature.styleSelector?.find(abstractStyleSelectorType =>
-      (abstractStyleSelectorType instanceof Style)) as Style | undefined;
+        (abstractStyleSelectorType instanceof Style)) as Style | undefined;
   }
 
   private getInlineStyleMap(feature: AbstractFeatureType): StyleMap | undefined {
     return feature.styleSelector?.find(abstractStyleSelectorType =>
-      (abstractStyleSelectorType instanceof StyleMap)) as StyleMap | undefined;
+        (abstractStyleSelectorType instanceof StyleMap)) as StyleMap | undefined;
   }
 
   private getSharedStyleById(styleUrl?: string): Style | undefined {
@@ -275,7 +276,7 @@ export class OlKmlFactory extends KMLFactory {
     }
 
     return this.getSharedStyle()
-      .find(s => ('#' + s.id) === styleUrl && s instanceof Style) as Style | undefined;
+        .find(s => ('#' + s.id) === styleUrl && s instanceof Style) as Style | undefined;
   }
 
   private getSharedStyleMapById(styleUrl?: string): StyleMap | undefined {
@@ -285,67 +286,7 @@ export class OlKmlFactory extends KMLFactory {
     }
 
     return this.getSharedStyle()
-      .find(s => ('#' + s.id) === styleUrl && s instanceof StyleMap) as StyleMap | undefined;
-  }
-
-  private getOlStyleFromStyleType(styleType: StyleType) {
-
-    const strokeWidth = styleType.lineStyle?.width ?? 1.0;
-    const strokeColor = this.parseColor(styleType.lineStyle?.color, styleType.lineStyle?.colorMode);
-
-    const fill = styleType.polyStyle?.fill ?? true;
-    const fillColor = this.parseColor(styleType.polyStyle?.color, styleType.polyStyle?.colorMode);
-
-    const iconSrc = styleType.iconStyle?.icon?.href ?? this.DEFAULT_ICON_URL;
-    const iconScale = styleType.iconStyle?.scale ?? 1.0;
-    const iconColor = this.parseColor(styleType.iconStyle?.color, styleType.iconStyle?.colorMode);
-    const iconRotation = this.degreesToRadians(styleType.iconStyle?.heading ?? 0.0);
-    const iconAnchorX = styleType.iconStyle?.hotSpot?.x ?? 1.0;
-    const iconAnchorY = styleType.iconStyle?.hotSpot?.y ?? 1.0;
-    const xUnits = styleType.iconStyle?.hotSpot?.xunits ?? UnitsEnumType.fraction;
-    const yUnits = styleType.iconStyle?.hotSpot?.yunits ?? UnitsEnumType.fraction;
-    const iconAnchorXUnits: OlIconAnchorUnits = xUnits === UnitsEnumType.fraction ? 'fraction' : 'pixels';
-    const iconAnchorYUnits: OlIconAnchorUnits = yUnits === UnitsEnumType.fraction ? 'fraction' : 'pixels';
-
-    let anchorOrigin: OlIconOrigin;
-
-    if (xUnits === UnitsEnumType.insetPixels && yUnits === UnitsEnumType.insetPixels) {
-      anchorOrigin = 'top-right';
-    } else if (xUnits === UnitsEnumType.insetPixels) {
-      anchorOrigin = 'bottom-right';
-    } else if (yUnits === UnitsEnumType.insetPixels) {
-      anchorOrigin = 'top-left';
-    } else {
-      anchorOrigin = 'bottom-left';
-    }
-
-    const olStroke = new OlStroke({
-      width: strokeWidth,
-      color: strokeColor
-    });
-
-    const olFill = new OlFill({
-      color: fill ? fillColor : this.COLOR_TRANSPARENT
-    })
-
-    const olIcon = new OlIcon({
-      anchorOrigin: anchorOrigin,
-      anchor: [iconAnchorX, iconAnchorY],
-      anchorXUnits: iconAnchorXUnits,
-      anchorYUnits: iconAnchorYUnits,
-      crossOrigin: 'anonymous',
-      color: iconColor,
-      rotation: iconRotation,
-      width: this.DEFAULT_ICON_WIDTH * iconScale,
-      height: this.DEFAULT_ICON_HEIGHT * iconScale,
-      src: iconSrc,
-    });
-
-    return new OlStyle({
-      stroke: olStroke,
-      fill: olFill,
-      image: styleType.iconStyle ? olIcon : undefined
-    });
+        .find(s => ('#' + s.id) === styleUrl && s instanceof StyleMap) as StyleMap | undefined;
   }
 
   private parseCoordinateString(coordinateString: string): OlCoordinate {
@@ -454,5 +395,186 @@ export class OlKmlFactory extends KMLFactory {
     // TODO: $[TYPENAME/TYPEFIELD] and $[TYPENAME/TYPEFIELD/displayName]
 
     return undefined;
+  }
+
+  /**
+   * Returns a style function for a feature.
+   *
+   * If the provided styleType or any child fields are undefined,
+   * default values are applied as specified in the KML specification.
+   *
+   * @param labelText text of placemark label
+   * @param styleType kml style to apply
+   * @private
+   */
+  private getStyleFunction(labelText: string, styleType?: StyleType): OlStyleFunction {
+
+    return (feature: OlFeatureLike, resolution: number): OlStyle[] => {
+
+      const featureGeometry = feature.getGeometry();
+
+      let geometries: OlGeometry[] = [];
+      let geometryStyles: OlStyle[] = [];
+
+      if (featureGeometry && featureGeometry instanceof OlGeometryCollection) {
+        geometries = featureGeometry.getGeometriesArrayRecursive();
+      } else if (featureGeometry && !(featureGeometry instanceof RenderFeature)) {
+        geometries.push(featureGeometry)
+      }
+
+      geometries.forEach((geometry) => {
+
+        if (geometry instanceof OlPoint) {
+          const pointStyle = this.getOlPointStyle(labelText, styleType);
+          pointStyle.setGeometry(geometry);
+          geometryStyles.push(pointStyle);
+        } else if (geometry instanceof OlLineString) {
+          const lineStringStyle = this.getOlLineStringStyle(styleType);
+          lineStringStyle.setGeometry(geometry);
+          geometryStyles.push(lineStringStyle);
+        } else if (geometry instanceof OlLinearRing) {
+          const linearRingStyle = this.getOlLinearRingStyle(styleType);
+          linearRingStyle.setGeometry(geometry);
+          geometryStyles.push(linearRingStyle);
+        } else if (geometry instanceof OlPolygon) {
+          const polygonStyle = this.getOlPolygonStyle(styleType);
+          polygonStyle.setGeometry(geometry);
+          geometryStyles.push(polygonStyle);
+        }
+      });
+      return geometryStyles;
+    }
+  }
+
+  private getOlPointStyle(labelText: string, styleType?: StyleType): OlStyle {
+
+    const iconSrc = styleType?.iconStyle?.icon?.href ?? this.DEFAULT_ICON_URL;
+    const iconScale = styleType?.iconStyle?.scale ?? 1.0;
+    const iconWidth = this.DEFAULT_ICON_WIDTH * iconScale;
+    const iconHeight = this.DEFAULT_ICON_HEIGHT * iconScale;
+    const iconColor = this.parseColor(styleType?.iconStyle?.color, styleType?.iconStyle?.colorMode) ?? this.COLOR_WHITE;
+    const iconRotation = this.degreesToRadians(styleType?.iconStyle?.heading ?? 0.0);
+    const iconAnchorX = styleType?.iconStyle?.hotSpot?.x ?? 1.0;
+    const iconAnchorY = styleType?.iconStyle?.hotSpot?.y ?? 1.0;
+    const xUnits = styleType?.iconStyle?.hotSpot?.xunits ?? UnitsEnumType.fraction;
+    const yUnits = styleType?.iconStyle?.hotSpot?.yunits ?? UnitsEnumType.fraction;
+    const iconAnchorXUnits: OlIconAnchorUnits = xUnits === UnitsEnumType.fraction ? 'fraction' : 'pixels';
+    const iconAnchorYUnits: OlIconAnchorUnits = yUnits === UnitsEnumType.fraction ? 'fraction' : 'pixels';
+    const labelColor = this.parseColor(styleType?.labelStyle?.color, styleType?.labelStyle?.colorMode) ?? this.COLOR_WHITE;
+    const labelScale = styleType?.labelStyle?.scale ?? 1.0;
+
+    let anchorOrigin: OlIconOrigin;
+
+    if (xUnits === UnitsEnumType.insetPixels && yUnits === UnitsEnumType.insetPixels) {
+      anchorOrigin = 'top-right';
+    } else if (xUnits === UnitsEnumType.insetPixels) {
+      anchorOrigin = 'bottom-right';
+    } else if (yUnits === UnitsEnumType.insetPixels) {
+      anchorOrigin = 'top-left';
+    } else {
+      anchorOrigin = 'bottom-left';
+    }
+
+    const iconStyle = new OlIcon({
+      anchorOrigin: anchorOrigin,
+      anchor: [iconAnchorX, iconAnchorY],
+      anchorXUnits: iconAnchorXUnits,
+      anchorYUnits: iconAnchorYUnits,
+      crossOrigin: 'anonymous',
+      color: iconColor,
+      rotation: iconRotation,
+      width: iconWidth,
+      height: iconHeight,
+      src: iconSrc,
+    });
+
+    // base text offset calculations on icon
+    const iconAnchor = iconStyle.getAnchor();
+    const imageSize = iconStyle.getSize();
+    const imageScale = iconStyle.getScaleArray();
+
+    let textStyle: OlText | undefined = undefined;
+
+    if (iconAnchor && imageSize && imageScale) {
+
+      const labelFill = new OlFill({
+        color: labelColor
+      });
+
+      const labelStroke = new OlStroke({
+        width: 1,
+        color: this.COLOR_BLACK
+      });
+
+      textStyle = new OlText({
+        text: labelText,
+        textAlign: 'left',
+        font: this.DEFAULT_LABEL_FONT,
+        scale: labelScale,
+        fill: labelFill,
+        stroke: labelStroke,
+        offsetX: imageScale[0] * (imageSize[0] - iconAnchor[0]),
+        offsetY: imageScale[1] * (imageSize[1] / 2 - iconAnchor[1])
+      });
+    }
+
+    return new OlStyle({
+      image: styleType?.iconStyle ? iconStyle : undefined,
+      text: textStyle
+    });
+  }
+
+  private getOlLineStringStyle(styleType?: StyleType) {
+
+    const strokeWidth = styleType?.lineStyle?.width ?? 1.0;
+    const strokeColor = this.parseColor(styleType?.lineStyle?.color, styleType?.lineStyle?.colorMode) ?? this.COLOR_WHITE;
+
+    const olStroke = new OlStroke({
+      width: strokeWidth,
+      color: strokeColor
+    });
+
+    return new OlStyle({
+      stroke: olStroke,
+    });
+  }
+
+  private getOlLinearRingStyle(styleType?: StyleType) {
+
+    const strokeWidth = styleType?.lineStyle?.width ?? 1.0;
+    const strokeColor = this.parseColor(styleType?.lineStyle?.color, styleType?.lineStyle?.colorMode) ?? this.COLOR_WHITE;
+
+    const olStroke = new OlStroke({
+      width: strokeWidth,
+      color: strokeColor
+    });
+
+    return new OlStyle({
+      stroke: olStroke,
+    });
+  }
+
+  private getOlPolygonStyle(styleType?: StyleType) {
+
+    const strokeWidth = styleType?.lineStyle?.width ?? 1.0;
+    const strokeColor = this.parseColor(styleType?.lineStyle?.color, styleType?.lineStyle?.colorMode) ?? this.COLOR_WHITE;
+
+    const fill = styleType?.polyStyle?.fill ?? true;
+    const outline = styleType?.polyStyle?.outline ?? true
+    const fillColor = this.parseColor(styleType?.polyStyle?.color, styleType?.polyStyle?.colorMode) ?? this.COLOR_WHITE;
+
+    const olStroke = new OlStroke({
+      width: strokeWidth,
+      color: outline ? strokeColor : this.COLOR_TRANSPARENT
+    });
+
+    const olFill = new OlFill({
+      color: fill ? fillColor : this.COLOR_TRANSPARENT
+    });
+
+    return new OlStyle({
+      stroke: olStroke,
+      fill: olFill,
+    });
   }
 }

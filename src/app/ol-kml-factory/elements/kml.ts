@@ -1,6 +1,7 @@
 import {KmlType} from '@bioroxx/kmljs';
 import {NetworkLinkControl} from './network-link-control';
 import {AbstractFeatureGroup} from './abstract-feature-group';
+import BaseLayer from 'ol/layer/Base';
 
 
 export class Kml implements KmlType {
@@ -15,27 +16,7 @@ export class Kml implements KmlType {
     this.feature = kml.feature;
   }
 
-  addLayer() {
-    if (this.feature?.addLayer) {
-      this.feature.addLayer();
-    }
-  }
-
-  removeLayer() {
-    if (this.feature?.removeLayer) {
-      this.feature.removeLayer();
-    }
-  }
-
-  setVisible() {
-    if (this.feature?.setVisible) {
-      this.feature.setVisible();
-    }
-  }
-
-  setInvisible() {
-    if (this.feature?.setInvisible) {
-      this.feature.setInvisible();
-    }
+  getLayer(): BaseLayer | undefined {
+    return this.feature?.olLayer;
   }
 }

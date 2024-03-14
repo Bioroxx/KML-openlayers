@@ -1,11 +1,14 @@
 import {DocumentType, Schema} from '@bioroxx/kmljs';
 import {AbstractContainerGroup} from './abstract-container-group';
 import {AbstractFeatureGroup} from './abstract-feature-group';
+import BaseLayer from 'ol/layer/Base';
 
 export class Document extends AbstractContainerGroup implements DocumentType {
 
   schema: Schema[];
   feature: AbstractFeatureGroup[];
+
+  override olLayer: BaseLayer;
 
   constructor(documentType: DocumentType) {
     super(documentType);
@@ -29,22 +32,6 @@ export class Document extends AbstractContainerGroup implements DocumentType {
   get children() {
     return this.feature;
   };
-
-  override addLayer = () => {
-    this.feature.forEach(f => {
-      if (f.addLayer) {
-        f.addLayer();
-      }
-    });
-  }
-
-  override removeLayer = () => {
-    this.feature.forEach(f => {
-      if (f.removeLayer) {
-        f.removeLayer();
-      }
-    });
-  }
 
   override get isVisible(): boolean {
     return this.feature.some(f => f.isVisible);

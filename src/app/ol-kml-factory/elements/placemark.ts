@@ -1,20 +1,13 @@
 import {PlacemarkType} from '@bioroxx/kmljs';
 import {AbstractFeatureGroup} from './abstract-feature-group';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
-import {OlFeature, OlMap, OlSelect, OlVectorLayer, OlVectorSource} from '../helper/ol-types';
-import {BalloonControl} from '../helper/balloon-control';
+import BaseLayer from 'ol/layer/Base';
 
 export class Placemark extends AbstractFeatureGroup implements PlacemarkType {
 
   geometry?: AbstractGeometryGroup;
 
-  olMap: OlMap;
-  olVectorSource: OlVectorSource;
-  olVectorLayer: OlVectorLayer<OlVectorSource>;
-  olFeature: OlFeature;
-  olSelect: OlSelect;
-
-  balloonControl?: BalloonControl;
+  override olLayer: BaseLayer;
 
   constructor(placemarkType: PlacemarkType) {
     super(placemarkType);
@@ -38,39 +31,15 @@ export class Placemark extends AbstractFeatureGroup implements PlacemarkType {
     return [];
   };
 
-  override addLayer = () => {
-    this.olMap.addLayer(this.olVectorLayer);
-    this.olMap.addInteraction(this.olSelect);
-  }
-
-  override removeLayer = () => {
-    this.onDeselected();
-    this.olMap.removeInteraction(this.olSelect);
-    this.olMap.removeLayer(this.olVectorLayer);
-  }
-
   override get isVisible(): boolean {
-    return this.olVectorLayer.getVisible();
+    return this.olLayer.getVisible();
   }
 
   override setVisible = () => {
-    this.olVectorLayer.setVisible(true);
+    this.olLayer.setVisible(true);
   }
 
   override setInvisible = () => {
-    this.onDeselected();
-    this.olVectorLayer.setVisible(false);
-  }
-
-  onSelected() {
-    if (this.balloonControl) {
-      this.olMap.addControl(this.balloonControl);
-    }
-  };
-
-  onDeselected() {
-    if (this.balloonControl) {
-      this.olMap.removeControl(this.balloonControl);
-    }
+    this.olLayer.setVisible(false);
   }
 }

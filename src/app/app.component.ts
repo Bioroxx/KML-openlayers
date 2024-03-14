@@ -44,7 +44,10 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.importDefaultDataSet();
+    //this.importDefaultDataSet();
+
+    this.kmlFileService.getFileContentString('/assets/kml/BEZIRKSGRENZEOGD.kml')
+        .subscribe((v) => this.importKml(v));
   }
 
   importKml(kmlString: string) {
@@ -56,7 +59,10 @@ export class AppComponent implements AfterViewInit {
 
     if (kml instanceof Kml) {
       this.kml = kml;
-      kml.addLayer();
+      const kmlLayer = this.kml.getLayer();
+      if (kmlLayer) {
+        this.map.addLayer(kmlLayer);
+      }
     }
   }
 
@@ -67,6 +73,21 @@ export class AppComponent implements AfterViewInit {
       dataProjection: 'EPSG:4326',
       featureProjection: 'EPSG:3857'
     });
+
+    console.log(features);
+
+    features.forEach((f) => {
+
+      console.log(f.getProperties());
+
+      console.log('Feature', {
+        keys: f.getKeys(),
+        properties: f.getProperties(),
+        propertiesInternal: f.getPropertiesInternal(),
+        geometry: f.getGeometry()
+      })
+    })
+
 
     const vector = new VectorLayer({
       source: new VectorSource({
@@ -101,9 +122,12 @@ export class AppComponent implements AfterViewInit {
     this.kmlFileService.getFileContentString(vienneDistricts).subscribe(kmlString => {
       const kml = kmlParser.parse(kmlString);
 
-      if (kml && kml instanceof Kml) {
+      if (kml instanceof Kml) {
         this.kml = kml;
-        kml.addLayer();
+        const kmlLayer = this.kml.getLayer();
+        if (kmlLayer) {
+          this.map.addLayer(kmlLayer);
+        }
       }
     });
   }
