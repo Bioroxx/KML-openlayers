@@ -1,5 +1,4 @@
-import {Angle180Type, Angle360Type, OrientationType} from '@bioroxx/kmljs';
-import {AbstractObjectGroup} from './abstract-object-group';
+import {AbstractObjectGroup, Angle180Type, Angle360Type, OrientationType} from '@bioroxx/kmljs';
 
 export class Orientation extends AbstractObjectGroup implements OrientationType {
 

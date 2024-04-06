@@ -1,5 +1,4 @@
-import {AbstractObjectGroup} from './abstract-object-group';
-import {AbstractFeatureType, AnyURI, AtomAuthor, AtomLink} from '@bioroxx/kmljs';
+import {AbstractFeatureType, AbstractObjectGroup, AnyURI, AtomAuthor, AtomLink} from '@bioroxx/kmljs';
 import {ExtendedData} from './extended-data';
 import {Region} from './region';
 import {AbstractStyleSelectorGroup} from './abstract-style-selector-group';

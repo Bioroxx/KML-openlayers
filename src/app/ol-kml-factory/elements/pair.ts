@@ -1,5 +1,4 @@
-import {AnyURI, PairType, StyleStateEnumType} from '@bioroxx/kmljs';
-import {AbstractObjectGroup} from './abstract-object-group';
+import {AbstractObjectGroup, AnyURI, PairType, StyleStateEnumType} from '@bioroxx/kmljs';
 import {AbstractStyleSelectorGroup} from './abstract-style-selector-group';
 
 export class Pair extends AbstractObjectGroup implements PairType {

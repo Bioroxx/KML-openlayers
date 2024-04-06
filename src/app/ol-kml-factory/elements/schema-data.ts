@@ -1,5 +1,4 @@
-import {AnyURI, SchemaDataType} from '@bioroxx/kmljs';
-import {AbstractObjectGroup} from './abstract-object-group';
+import {AbstractObjectGroup, AnyURI, SchemaDataType} from '@bioroxx/kmljs';
 import {SimpleData} from './simple-data';
 
 export class SchemaData extends AbstractObjectGroup implements SchemaDataType {

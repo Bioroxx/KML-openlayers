@@ -12,7 +12,7 @@ export class Polygon extends AbstractGeometryGroup implements PolygonType {
   outerBoundaryIs?: Boundary;
   innerBoundaryIs?: Boundary[];
 
-  override olGeometry?: OlPolygon;
+  override olGeometry: OlPolygon;
 
   constructor(polygonType: PolygonType) {
     super(polygonType);

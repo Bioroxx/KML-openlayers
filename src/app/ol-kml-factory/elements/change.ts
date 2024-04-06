@@ -1,5 +1,4 @@
-import {ChangeType} from '@bioroxx/kmljs';
-import {AbstractObjectGroup} from './abstract-object-group';
+import {AbstractObjectGroup, ChangeType} from '@bioroxx/kmljs';
 
 export class Change implements ChangeType {
 

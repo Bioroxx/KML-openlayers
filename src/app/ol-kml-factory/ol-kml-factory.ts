@@ -80,11 +80,11 @@ export class OlKmlFactory extends KMLFactory {
     super();
   }
 
-  override createKml(obj: KmlType): KmlType {
+  override createKml(obj: KmlType): Kml {
     return new Kml(obj);
   }
 
-  override createDocument(obj: DocumentType): DocumentType {
+  override createDocument(obj: DocumentType): Document {
     const document = new Document(obj);
     const layers = document.feature
         .map(feature => feature.olLayer)
@@ -93,7 +93,7 @@ export class OlKmlFactory extends KMLFactory {
     return document;
   }
 
-  override createFolder(obj: FolderType): FolderType {
+  override createFolder(obj: FolderType): Folder {
     const folder = new Folder(obj);
     const layers = folder.feature
         .map(feature => feature.olLayer)
@@ -102,7 +102,7 @@ export class OlKmlFactory extends KMLFactory {
     return folder;
   }
 
-  override createPlacemark(obj: PlacemarkType): PlacemarkType {
+  override createPlacemark(obj: PlacemarkType): Placemark {
 
     const placemark = new Placemark(obj);
     const feature = new OlFeature({geometry: placemark.geometry?.olGeometry});
@@ -154,13 +154,12 @@ export class OlKmlFactory extends KMLFactory {
     }
     feature.set('balloonStyle', balloonStyle);
 
-    const visible = placemark.visibility ?? true;
     const vectorSource = new OlVectorSource({features: [feature]});
-    placemark.olLayer = new OlVectorLayer({source: vectorSource, visible});
+    placemark.olLayer = new OlVectorLayer({source: vectorSource, visible: placemark.visibility ?? true});
     return placemark;
   }
 
-  override createPoint(obj: PointType): PointType {
+  override createPoint(obj: PointType): Point {
 
     const point = new Point(obj);
 
@@ -172,7 +171,7 @@ export class OlKmlFactory extends KMLFactory {
     return point;
   }
 
-  override createPolygon(obj: PolygonType): PolygonType {
+  override createPolygon(obj: PolygonType): Polygon {
 
     const polygon = new Polygon(obj);
 
@@ -193,7 +192,7 @@ export class OlKmlFactory extends KMLFactory {
     return polygon;
   }
 
-  override createLinearRing(obj: LinearRingType): LinearRingType {
+  override createLinearRing(obj: LinearRingType): LinearRing {
 
     const linearRing = new LinearRing(obj);
 
@@ -206,7 +205,7 @@ export class OlKmlFactory extends KMLFactory {
     return linearRing
   }
 
-  override createLineString(obj: LineStringType): LineStringType {
+  override createLineString(obj: LineStringType): LineString {
 
     const lineString = new LineString(obj);
 
@@ -219,7 +218,7 @@ export class OlKmlFactory extends KMLFactory {
     return lineString;
   }
 
-  override createMultiGeometry(obj: MultiGeometryType): MultiGeometryType {
+  override createMultiGeometry(obj: MultiGeometryType): MultiGeometry {
 
     const multiGeometry = new MultiGeometry(obj);
 
@@ -235,27 +234,27 @@ export class OlKmlFactory extends KMLFactory {
     return multiGeometry;
   }
 
-  override createStyle(obj: StyleType): StyleType {
+  override createStyle(obj: StyleType): Style {
     return new Style(obj);
   }
 
-  override createStyleMap(obj: StyleMapType): StyleMapType {
+  override createStyleMap(obj: StyleMapType): StyleMap {
     return new StyleMap(obj);
   }
 
-  override createPair(obj: PairType): PairType {
+  override createPair(obj: PairType): Pair {
     return new Pair(obj);
   }
 
-  override createLineStyle(obj: LineStyleType): LineStyleType {
+  override createLineStyle(obj: LineStyleType): LineStyle {
     return new LineStyle(obj);
   }
 
-  override createPolyStyle(obj: PolyStyleType): PolyStyleType {
+  override createPolyStyle(obj: PolyStyleType): PolyStyle {
     return new PolyStyle(obj);
   }
 
-  override createIconStyle(obj: IconStyleType): IconStyleType {
+  override createIconStyle(obj: IconStyleType): IconStyle {
     return new IconStyle(obj);
   }
 
@@ -363,6 +362,19 @@ export class OlKmlFactory extends KMLFactory {
     return currentEntityReplacedString;
   }
 
+  /**
+   * Resolves the string value of an entity replacement path as defined in the KML reference.
+   *
+   * For 6.5.4 and 6.5.5, the value of a <code>SimpleData</code> element is directly resolved by its name,
+   * without obtaining the value type of the <code>SimpleData</code> field, because it is resolved as a string value
+   * regardless of its type. Consequently, <code>SimpleData</code> elements can be referenced, without a
+   * corresponding <code>Schema</code> element.
+   *
+   * @param path of element, whose value shall replace the reference
+   * @param feature containing the values to resolve
+   * @private
+   * @see 6.5 in <a href="https://portal.ogc.org/files/?artifact_id=27810">KML Reference</a>
+   */
   private resolveEntityStringValue(path: string, feature: AbstractFeatureType): string | undefined {
 
     const pathArray = path.split('/');
@@ -392,7 +404,25 @@ export class OlKmlFactory extends KMLFactory {
       return data.find(d => d.name === pathArray[0])?.displayName;
     }
 
-    // TODO: $[TYPENAME/TYPEFIELD] and $[TYPENAME/TYPEFIELD/displayName]
+    // $[TYPENAME/TYPEFIELD]
+    // $[TYPENAME/TYPEFIELD/displayName]
+    if (!!feature.extendedData?.schemaData &&
+        (pathArray.length === 2 || (pathArray.length === 3 && pathArray[2] === 'displayName'))) {
+
+      for (const schemaData of feature.extendedData.schemaData) {
+
+        if (!schemaData.simpleData) {
+          return undefined;
+        }
+
+        for (const simpleData of schemaData.simpleData) {
+
+          if (simpleData.name === pathArray[1]) {
+            return simpleData.textContent;
+          }
+        }
+      }
+    }
 
     return undefined;
   }

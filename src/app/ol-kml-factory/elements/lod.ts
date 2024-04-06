@@ -1,5 +1,4 @@
-import {LodType} from '@bioroxx/kmljs';
-import {AbstractObjectGroup} from './abstract-object-group';
+import {AbstractObjectGroup, LodType} from '@bioroxx/kmljs';
 
 export class Lod extends AbstractObjectGroup implements LodType {
 

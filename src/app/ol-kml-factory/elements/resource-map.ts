@@ -1,5 +1,4 @@
-import {ResourceMapType} from '@bioroxx/kmljs';
-import {AbstractObjectGroup} from './abstract-object-group';
+import {AbstractObjectGroup, ResourceMapType} from '@bioroxx/kmljs';
 import {Alias} from './alias';
 
 export class ResourceMap extends AbstractObjectGroup implements ResourceMapType {

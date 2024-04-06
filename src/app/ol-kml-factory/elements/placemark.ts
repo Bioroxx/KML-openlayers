@@ -1,13 +1,13 @@
 import {PlacemarkType} from '@bioroxx/kmljs';
 import {AbstractFeatureGroup} from './abstract-feature-group';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
-import BaseLayer from 'ol/layer/Base';
+import {OlVectorLayer, OlVectorSource} from '../helper/ol-types';
 
 export class Placemark extends AbstractFeatureGroup implements PlacemarkType {
 
   geometry?: AbstractGeometryGroup;
 
-  override olLayer: BaseLayer;
+  override olLayer: OlVectorLayer<OlVectorSource>;
 
   constructor(placemarkType: PlacemarkType) {
     super(placemarkType);

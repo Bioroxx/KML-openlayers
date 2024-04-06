@@ -131,7 +131,8 @@
           &lt;h4&gt;1. Bezirk&lt;/h4&gt;
           &lt;p&gt;$[name]&lt;/p&gt;
           &lt;p&gt;$[data]&lt;/p&gt;
-          &lt;p&gt;$[mydata/displayName]&lt;/p&gt;
+          &lt;p&gt;$[data/displayName]&lt;/p&gt;
+          &lt;p&gt;$[mySchema/simpleData/displayName]&lt;/p&gt;
         </description>
         <LookAt>
           <longitude>16.37003829955367</longitude>
@@ -148,6 +149,9 @@
             <displayName>Data Display Name</displayName>
             <value>Data Value</value>
           </Data>
+          <SchemaData>
+            <SimpleData name="simpleData">MySimpleData</SimpleData>
+          </SchemaData>
         </ExtendedData>
         <MultiGeometry>
           <Point>

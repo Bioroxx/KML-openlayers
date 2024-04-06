@@ -1,9 +1,8 @@
-import {AbstractObjectGroup} from './abstract-object-group';
-import {AbstractSubStyleType} from '@bioroxx/kmljs';
+import {AbstractObjectGroup, AbstractSubStyleType} from '@bioroxx/kmljs';
 
 export abstract class AbstractSubStyleGroup extends AbstractObjectGroup implements AbstractSubStyleType {
 
-  constructor(abstractSubStyleType: AbstractSubStyleType) {
+  protected constructor(abstractSubStyleType: AbstractSubStyleType) {
     super(abstractSubStyleType);
   }
 }

@@ -1,5 +1,6 @@
 import {Angle180Type, ScreenOverlayType, Vec2Type} from '@bioroxx/kmljs';
 import {AbstractOverlayGroup} from './abstract-overlay-group';
+import BaseLayer from 'ol/layer/Base';
 
 export class ScreenOverlay extends AbstractOverlayGroup implements ScreenOverlayType {
 
@@ -8,6 +9,8 @@ export class ScreenOverlay extends AbstractOverlayGroup implements ScreenOverlay
   rotationXY?: Vec2Type;
   size?: Vec2Type;
   rotation?: Angle180Type;
+
+  olLayer: BaseLayer;
 
   constructor(screenOverlayType: ScreenOverlayType) {
     super(screenOverlayType);
@@ -19,15 +22,15 @@ export class ScreenOverlay extends AbstractOverlayGroup implements ScreenOverlay
     this.rotation = screenOverlayType.rotation;
   }
 
-  override get isRendered(): boolean {
-    return false;
+  override get isVisible(): boolean {
+    return this.olLayer.getVisible();
   }
 
-  override render = () => {
-
+  override setVisible = () => {
+    this.olLayer.setVisible(true);
   }
 
-  override unRender = () => {
-
+  override setInvisible = () => {
+    this.olLayer.setVisible(false);
   }
 }

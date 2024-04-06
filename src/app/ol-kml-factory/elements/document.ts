@@ -1,14 +1,14 @@
 import {DocumentType, Schema} from '@bioroxx/kmljs';
 import {AbstractContainerGroup} from './abstract-container-group';
 import {AbstractFeatureGroup} from './abstract-feature-group';
-import BaseLayer from 'ol/layer/Base';
+import LayerGroup from 'ol/layer/Group';
 
 export class Document extends AbstractContainerGroup implements DocumentType {
 
   schema: Schema[];
   feature: AbstractFeatureGroup[];
 
-  override olLayer: BaseLayer;
+  override olLayer: LayerGroup;
 
   constructor(documentType: DocumentType) {
     super(documentType);

@@ -1,13 +1,13 @@
 import {FolderType} from '@bioroxx/kmljs';
 import {AbstractContainerGroup} from './abstract-container-group';
 import {AbstractFeatureGroup} from './abstract-feature-group';
-import BaseLayer from 'ol/layer/Base';
+import LayerGroup from 'ol/layer/Group';
 
 export class Folder extends AbstractContainerGroup implements FolderType {
 
   feature: AbstractFeatureGroup[];
 
-  override olLayer: BaseLayer;
+  override olLayer: LayerGroup;
 
   constructor(folderType: FolderType) {
     super(folderType);

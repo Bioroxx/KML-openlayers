@@ -3,7 +3,7 @@ import {AbstractContainerType} from '@bioroxx/kmljs';
 
 export abstract class AbstractContainerGroup extends AbstractFeatureGroup implements AbstractContainerType {
 
-  constructor(abstractContainerType: AbstractContainerType) {
+  protected constructor(abstractContainerType: AbstractContainerType) {
     super(abstractContainerType);
   }
 }

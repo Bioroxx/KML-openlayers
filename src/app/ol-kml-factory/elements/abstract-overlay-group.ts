@@ -8,7 +8,7 @@ export abstract class AbstractOverlayGroup extends AbstractFeatureGroup implemen
   drawOrder?: number;
   icon?: Icon;
 
-  constructor(abstractOverlayType: AbstractOverlayType) {
+  protected constructor(abstractOverlayType: AbstractOverlayType) {
     super(abstractOverlayType);
 
     this.color = abstractOverlayType.color;

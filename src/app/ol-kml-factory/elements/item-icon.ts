@@ -1,5 +1,4 @@
-import {ItemIconStateType, ItemIconType} from '@bioroxx/kmljs';
-import {AbstractObjectGroup} from './abstract-object-group';
+import {AbstractObjectGroup, ItemIconStateType, ItemIconType} from '@bioroxx/kmljs';
 
 export class ItemIcon extends AbstractObjectGroup implements ItemIconType {
 

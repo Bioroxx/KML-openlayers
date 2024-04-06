@@ -1,5 +1,4 @@
-import {Angle180Type, Angle90Type, LocationType} from '@bioroxx/kmljs';
-import {AbstractObjectGroup} from './abstract-object-group';
+import {AbstractObjectGroup, Angle180Type, Angle90Type, LocationType} from '@bioroxx/kmljs';
 
 export class Location extends AbstractObjectGroup implements LocationType {
 

@@ -1,5 +1,4 @@
-import {AbstractObjectGroup} from './abstract-object-group';
-import {AbstractLatLonBoxType, Angle180Type} from '@bioroxx/kmljs';
+import {AbstractLatLonBoxType, AbstractObjectGroup, Angle180Type} from '@bioroxx/kmljs';
 
 export abstract class AbstractLatLonBox extends AbstractObjectGroup implements AbstractLatLonBoxType {
 
@@ -8,7 +7,7 @@ export abstract class AbstractLatLonBox extends AbstractObjectGroup implements A
   east?: Angle180Type;
   west?: Angle180Type;
 
-  constructor(abstractLatLonBoxType: AbstractLatLonBoxType) {
+  protected constructor(abstractLatLonBoxType: AbstractLatLonBoxType) {
     super(abstractLatLonBoxType);
 
     this.north = abstractLatLonBoxType.north;

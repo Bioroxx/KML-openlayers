@@ -6,7 +6,7 @@ export abstract class AbstractColorStyleGroup extends AbstractSubStyleGroup impl
   color?: ColorType;
   colorMode?: ColorModeEnumType;
 
-  constructor(abstractColorStyleType: AbstractColorStyleType) {
+  protected constructor(abstractColorStyleType: AbstractColorStyleType) {
     super(abstractColorStyleType);
 
     this.color = abstractColorStyleType.color;

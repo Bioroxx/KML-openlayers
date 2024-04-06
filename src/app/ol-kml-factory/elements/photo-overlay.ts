@@ -3,6 +3,7 @@ import {AbstractOverlayGroup} from './abstract-overlay-group';
 import {Point} from './point';
 import {ImagePyramid} from './image-pyramid';
 import {ViewVolume} from './view-volume';
+import BaseLayer from 'ol/layer/Base';
 
 export class PhotoOverlay extends AbstractOverlayGroup implements PhotoOverlayType {
 
@@ -11,6 +12,8 @@ export class PhotoOverlay extends AbstractOverlayGroup implements PhotoOverlayTy
   imagePyramid?: ImagePyramid;
   point?: Point;
   shape?: ShapeEnumType;
+
+  olLayer: BaseLayer;
 
   constructor(photoOverlayType: PhotoOverlayType) {
     super(photoOverlayType);
@@ -22,15 +25,15 @@ export class PhotoOverlay extends AbstractOverlayGroup implements PhotoOverlayTy
     this.shape = photoOverlayType.shape;
   }
 
-  override get isRendered(): boolean {
-    return false;
+  override get isVisible(): boolean {
+    return this.olLayer.getVisible();
   }
 
-  override render = () => {
-
+  override setVisible = () => {
+    this.olLayer.setVisible(true);
   }
 
-  override unRender = () => {
-
+  override setInvisible = () => {
+    this.olLayer.setVisible(false);
   }
 }

@@ -2,12 +2,15 @@ import {GroundOverlayType} from '@bioroxx/kmljs';
 import {AbstractOverlayGroup} from './abstract-overlay-group';
 import {AltitudeModeGroup} from './altitude-mode-group';
 import {LatLonBox} from './lat-lon-box';
+import BaseLayer from 'ol/layer/Base';
 
 export class GroundOverlay extends AbstractOverlayGroup implements GroundOverlayType {
 
   altitude?: number;
   altitudeMode?: AltitudeModeGroup;
   latLonBox?: LatLonBox;
+
+  olLayer: BaseLayer;
 
   constructor(groundOverlayType: GroundOverlayType) {
     super(groundOverlayType);
@@ -17,15 +20,15 @@ export class GroundOverlay extends AbstractOverlayGroup implements GroundOverlay
     this.latLonBox = groundOverlayType.latLonBox;
   }
 
-  override get isRendered(): boolean {
-    return false;
+  override get isVisible(): boolean {
+    return this.olLayer.getVisible();
   }
 
-  override render = () => {
-
+  override setVisible = () => {
+    this.olLayer.setVisible(true);
   }
 
-  override unRender = () => {
-
+  override setInvisible = () => {
+    this.olLayer.setVisible(false);
   }
 }
