@@ -11,10 +11,11 @@ import {TreeNodeSelectEvent, TreeNodeUnSelectEvent} from 'primeng/tree';
 })
 export class ListViewComponent {
 
-  rootNode: TreeNode<AbstractFeatureGroup>[];
+  rootNode?: TreeNode<AbstractFeatureGroup>[];
 
-  @Input() set kml(kml: Kml) {
-    if (!kml) {
+  @Input() set kml(kml: Kml | undefined) {
+    if (!kml || !kml.feature) {
+      this.rootNode = [];
       return;
     }
     this.rootNode = [kml.feature as TreeNode<AbstractFeatureGroup>];

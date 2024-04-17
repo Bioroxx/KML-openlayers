@@ -24,7 +24,7 @@ export class AppComponent implements AfterViewInit {
   private readonly viennaCoordinate = fromLonLat([16.363449, 48.210033]);
 
   map: Map;
-  kml: Kml;
+  kml?: Kml;
 
   constructor(private kmlFileService: KmlFileService) {
 
@@ -44,15 +44,15 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    //this.importDefaultDataSet();
-
     this.kmlFileService.getFileContentString('/assets/kml/BEZIRKSGRENZEOGD.kml')
         .subscribe((v) => this.importKml(v));
   }
 
   importKml(kmlString: string) {
 
-    const kmlFactory = new OlKmlFactory(this.map);
+    this.clear();
+
+    const kmlFactory = new OlKmlFactory();
     const kmlParser = new KMLParser(kmlFactory);
 
     const kml = kmlParser.parse(kmlString);
@@ -67,6 +67,8 @@ export class AppComponent implements AfterViewInit {
   }
 
   importKmlWithOpenLayersDefaultImplementation(kmlString: string) {
+
+    this.clear();
 
     const kmlParser = new KML();
     const features = kmlParser.readFeatures(kmlString, {
@@ -98,7 +100,7 @@ export class AppComponent implements AfterViewInit {
     this.map.addLayer(vector);
   }
 
-  clearMapFromAdditionalLayers() {
+  removeAdditionalLayersFromMap() {
     const vectorLayers = this.map.getLayers().getArray().filter(l => !(l instanceof TileLayer));
     const interactions = this.map.getInteractions().getArray().filter((i) => i instanceof OlSelect);
     const controls = this.map.getControls().getArray().filter((c) => c instanceof BalloonControl);
@@ -112,24 +114,9 @@ export class AppComponent implements AfterViewInit {
     controls.forEach((c) => this.map.removeControl(c));
   }
 
-  importDefaultDataSet() {
-
-    const vienneDistricts = './assets/kml/BEZIRKSGRENZEOGD.kml'
-
-    const kmlFactory = new OlKmlFactory(this.map);
-    const kmlParser = new KMLParser(kmlFactory);
-
-    this.kmlFileService.getFileContentString(vienneDistricts).subscribe(kmlString => {
-      const kml = kmlParser.parse(kmlString);
-
-      if (kml instanceof Kml) {
-        this.kml = kml;
-        const kmlLayer = this.kml.getLayer();
-        if (kmlLayer) {
-          this.map.addLayer(kmlLayer);
-        }
-      }
-    });
+  clear() {
+    this.removeAdditionalLayersFromMap();
+    this.kml = undefined;
   }
 
   zoomIntoVienna() {

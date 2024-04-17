@@ -11,7 +11,7 @@ export class KmlEditorComponent {
 
   public readonly kmlTemplateFiles: KMLFile[] = [
     {
-      name: 'Placemark',
+      name: 'Stephansdom',
       url: './assets/kml/placemark.kml'
     },
     {

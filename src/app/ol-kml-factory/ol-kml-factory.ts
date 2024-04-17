@@ -47,7 +47,6 @@ import {
   OlIconOrigin,
   OlLinearRing,
   OlLineString,
-  OlMap,
   OlPoint,
   OlPolygon,
   OlStroke,
@@ -76,9 +75,16 @@ export class OlKmlFactory extends KMLFactory {
   DEFAULT_ICON_HEIGHT = 32;
   DEFAULT_LABEL_FONT = '16px Calibri,sans-serif';
 
-  constructor(private map: OlMap) {
-    super();
-  }
+  DEFAULT_ICON_STYLE = new OlIcon({
+    anchorOrigin: 'bottom-left',
+    anchor: [0.5, 0.0],
+    anchorXUnits: 'fraction',
+    anchorYUnits: 'fraction',
+    crossOrigin: 'anonymous',
+    width: this.DEFAULT_ICON_WIDTH,
+    height: this.DEFAULT_ICON_HEIGHT,
+    src: this.DEFAULT_ICON_URL,
+  });
 
   override createKml(obj: KmlType): Kml {
     return new Kml(obj);
@@ -505,20 +511,26 @@ export class OlKmlFactory extends KMLFactory {
       anchorOrigin = 'bottom-left';
     }
 
-    const iconStyle = new OlIcon({
-      anchorOrigin: anchorOrigin,
-      anchor: [iconAnchorX, iconAnchorY],
-      anchorXUnits: iconAnchorXUnits,
-      anchorYUnits: iconAnchorYUnits,
-      crossOrigin: 'anonymous',
-      color: iconColor,
-      rotation: iconRotation,
-      width: iconWidth,
-      height: iconHeight,
-      src: iconSrc,
-    });
+    let iconStyle: OlIcon | undefined = undefined;
 
-    // base text offset calculations on icon
+    if (styleType?.iconStyle) {
+      iconStyle = new OlIcon({
+        anchorOrigin: anchorOrigin,
+        anchor: [iconAnchorX, iconAnchorY],
+        anchorXUnits: iconAnchorXUnits,
+        anchorYUnits: iconAnchorYUnits,
+        crossOrigin: 'anonymous',
+        color: iconColor,
+        rotation: iconRotation,
+        width: iconWidth,
+        height: iconHeight,
+        src: iconSrc,
+      });
+    } else {
+      iconStyle = this.DEFAULT_ICON_STYLE;
+    }
+
+    // text offset calculations based on icon
     const iconAnchor = iconStyle.getAnchor();
     const imageSize = iconStyle.getSize();
     const imageScale = iconStyle.getScaleArray();
@@ -532,7 +544,7 @@ export class OlKmlFactory extends KMLFactory {
       });
 
       const labelStroke = new OlStroke({
-        width: 1,
+        width: 1.0,
         color: this.COLOR_BLACK
       });
 
@@ -547,9 +559,9 @@ export class OlKmlFactory extends KMLFactory {
         offsetY: imageScale[1] * (imageSize[1] / 2 - iconAnchor[1])
       });
     }
-
+    
     return new OlStyle({
-      image: styleType?.iconStyle ? iconStyle : undefined,
+      image: iconStyle,
       text: textStyle
     });
   }
