@@ -11,17 +11,12 @@ import {
   KmlType,
   LinearRingType,
   LineStringType,
-  LineStyle,
-  LineStyleType,
   MultiGeometryType,
-  Pair,
-  PairType,
   PlacemarkType,
   PointType,
   PolygonType,
-  PolyStyle,
-  PolyStyleType,
-  StyleMapType,
+  Style,
+  StyleMap,
   StyleStateEnumType,
   StyleType,
   UnitsEnumType
@@ -58,10 +53,7 @@ import {
 } from './helper/ol-types';
 import {MultiGeometry} from './elements/multi-geometry';
 import {LineString} from './elements/line-string';
-import {Style} from './elements/style';
-import {StyleMap} from './elements/style-map';
 import RenderFeature from 'ol/render/Feature';
-import {IconStyle} from './elements/icon-style';
 import LayerGroup from 'ol/layer/Group';
 import BaseLayer from 'ol/layer/Base';
 
@@ -147,21 +139,23 @@ export class OlKmlFactory extends KMLFactory {
     let balloonStyle: BalloonStyleType | undefined = undefined;
     if (placemark.description) {
       balloonStyle = {
-        ...normalStyle?.balloonStyle,
+        id: '',
+        targetId: '',
+        bgColor: normalStyle?.balloonStyle?.bgColor ?? 'ffffffff',
+        textColor: normalStyle?.balloonStyle?.textColor ?? 'ff000000',
         displayMode: normalStyle?.balloonStyle?.displayMode ?? DisplayModeEnumType.default,
         text: this.getEntityReplacedString(placemark.description, placemark),
       };
     } else if (normalStyle?.balloonStyle?.text) {
       balloonStyle = {
-        ...normalStyle?.balloonStyle,
-        displayMode: normalStyle?.balloonStyle?.displayMode ?? DisplayModeEnumType.default,
+        ...normalStyle.balloonStyle,
         text: this.getEntityReplacedString(normalStyle.balloonStyle.text, placemark)
       };
     }
     feature.set('balloonStyle', balloonStyle);
 
     const vectorSource = new OlVectorSource({features: [feature]});
-    placemark.olLayer = new OlVectorLayer({source: vectorSource, visible: placemark.visibility ?? true});
+    placemark.olLayer = new OlVectorLayer({source: vectorSource, visible: placemark.visibility});
     return placemark;
   }
 
@@ -183,7 +177,7 @@ export class OlKmlFactory extends KMLFactory {
 
     if (polygon.outerBoundaryIs?.olGeometry) {
 
-      const innerBoundaryCoordinatesArray = (polygon.innerBoundaryIs ?? [])
+      const innerBoundaryCoordinatesArray = polygon.innerBoundaryIs
           .filter(i => i !== undefined && i.olGeometry !== undefined)
           .map(i => i.olGeometry!.getCoordinates());
 
@@ -204,7 +198,7 @@ export class OlKmlFactory extends KMLFactory {
 
     if (linearRing.coordinates) {
 
-      const coordinatesArray = linearRing.coordinates?.map(c => this.parseCoordinateString(c));
+      const coordinatesArray = linearRing.coordinates.map(c => this.parseCoordinateString(c));
       linearRing.olGeometry = new OlLinearRing(coordinatesArray);
     }
 
@@ -217,7 +211,7 @@ export class OlKmlFactory extends KMLFactory {
 
     if (lineString.coordinates) {
 
-      const coordinatesArray = lineString.coordinates?.map(c => this.parseCoordinateString(c));
+      const coordinatesArray = lineString.coordinates.map(c => this.parseCoordinateString(c));
       lineString.olGeometry = new OlLineString(coordinatesArray);
     }
 
@@ -240,37 +234,13 @@ export class OlKmlFactory extends KMLFactory {
     return multiGeometry;
   }
 
-  override createStyle(obj: StyleType): Style {
-    return new Style(obj);
-  }
-
-  override createStyleMap(obj: StyleMapType): StyleMap {
-    return new StyleMap(obj);
-  }
-
-  override createPair(obj: PairType): Pair {
-    return new Pair(obj);
-  }
-
-  override createLineStyle(obj: LineStyleType): LineStyle {
-    return new LineStyle(obj);
-  }
-
-  override createPolyStyle(obj: PolyStyleType): PolyStyle {
-    return new PolyStyle(obj);
-  }
-
-  override createIconStyle(obj: IconStyleType): IconStyle {
-    return new IconStyle(obj);
-  }
-
   private getInlineStyle(feature: AbstractFeatureType): Style | undefined {
-    return feature.styleSelector?.find(abstractStyleSelectorType =>
+    return feature.styleSelector.find(abstractStyleSelectorType =>
         (abstractStyleSelectorType instanceof Style)) as Style | undefined;
   }
 
   private getInlineStyleMap(feature: AbstractFeatureType): StyleMap | undefined {
-    return feature.styleSelector?.find(abstractStyleSelectorType =>
+    return feature.styleSelector.find(abstractStyleSelectorType =>
         (abstractStyleSelectorType instanceof StyleMap)) as StyleMap | undefined;
   }
 
@@ -484,56 +454,15 @@ export class OlKmlFactory extends KMLFactory {
 
   private getOlPointStyle(labelText: string, styleType?: StyleType): OlStyle {
 
-    const iconSrc = styleType?.iconStyle?.icon?.href ?? this.DEFAULT_ICON_URL;
-    const iconScale = styleType?.iconStyle?.scale ?? 1.0;
-    const iconWidth = this.DEFAULT_ICON_WIDTH * iconScale;
-    const iconHeight = this.DEFAULT_ICON_HEIGHT * iconScale;
-    const iconColor = this.parseColor(styleType?.iconStyle?.color, styleType?.iconStyle?.colorMode) ?? this.COLOR_WHITE;
-    const iconRotation = this.degreesToRadians(styleType?.iconStyle?.heading ?? 0.0);
-    const iconAnchorX = styleType?.iconStyle?.hotSpot?.x ?? 1.0;
-    const iconAnchorY = styleType?.iconStyle?.hotSpot?.y ?? 1.0;
-    const xUnits = styleType?.iconStyle?.hotSpot?.xunits ?? UnitsEnumType.fraction;
-    const yUnits = styleType?.iconStyle?.hotSpot?.yunits ?? UnitsEnumType.fraction;
-    const iconAnchorXUnits: OlIconAnchorUnits = xUnits === UnitsEnumType.fraction ? 'fraction' : 'pixels';
-    const iconAnchorYUnits: OlIconAnchorUnits = yUnits === UnitsEnumType.fraction ? 'fraction' : 'pixels';
+    const icon = this.getOlIconStyle(styleType?.iconStyle);
+
     const labelColor = this.parseColor(styleType?.labelStyle?.color, styleType?.labelStyle?.colorMode) ?? this.COLOR_WHITE;
     const labelScale = styleType?.labelStyle?.scale ?? 1.0;
 
-    let anchorOrigin: OlIconOrigin;
-
-    if (xUnits === UnitsEnumType.insetPixels && yUnits === UnitsEnumType.insetPixels) {
-      anchorOrigin = 'top-right';
-    } else if (xUnits === UnitsEnumType.insetPixels) {
-      anchorOrigin = 'bottom-right';
-    } else if (yUnits === UnitsEnumType.insetPixels) {
-      anchorOrigin = 'top-left';
-    } else {
-      anchorOrigin = 'bottom-left';
-    }
-
-    let iconStyle: OlIcon | undefined = undefined;
-
-    if (styleType?.iconStyle) {
-      iconStyle = new OlIcon({
-        anchorOrigin: anchorOrigin,
-        anchor: [iconAnchorX, iconAnchorY],
-        anchorXUnits: iconAnchorXUnits,
-        anchorYUnits: iconAnchorYUnits,
-        crossOrigin: 'anonymous',
-        color: iconColor,
-        rotation: iconRotation,
-        width: iconWidth,
-        height: iconHeight,
-        src: iconSrc,
-      });
-    } else {
-      iconStyle = this.DEFAULT_ICON_STYLE;
-    }
-
     // text offset calculations based on icon
-    const iconAnchor = iconStyle.getAnchor();
-    const imageSize = iconStyle.getSize();
-    const imageScale = iconStyle.getScaleArray();
+    const iconAnchor = icon.getAnchor();
+    const imageSize = icon.getSize();
+    const imageScale = icon.getScaleArray();
 
     let textStyle: OlText | undefined = undefined;
 
@@ -559,9 +488,9 @@ export class OlKmlFactory extends KMLFactory {
         offsetY: imageScale[1] * (imageSize[1] / 2 - iconAnchor[1])
       });
     }
-    
+
     return new OlStyle({
-      image: iconStyle,
+      image: icon,
       text: textStyle
     });
   }
@@ -617,6 +546,51 @@ export class OlKmlFactory extends KMLFactory {
     return new OlStyle({
       stroke: olStroke,
       fill: olFill,
+    });
+  }
+
+  private getOlIconStyle(iconStyle?: IconStyleType): OlIcon {
+
+    if (!iconStyle) {
+      return this.DEFAULT_ICON_STYLE;
+    }
+
+    const iconSrc = iconStyle.icon?.href ?? this.DEFAULT_ICON_URL;
+    const iconScale = iconStyle.scale ?? 1.0;
+    const iconWidth = this.DEFAULT_ICON_WIDTH * iconScale;
+    const iconHeight = this.DEFAULT_ICON_HEIGHT * iconScale;
+    const iconColor = this.parseColor(iconStyle.color, iconStyle.colorMode) ?? this.COLOR_WHITE;
+    const iconRotation = this.degreesToRadians(iconStyle.heading ?? 0.0);
+    const iconAnchorX = iconStyle.hotSpot.x;
+    const iconAnchorY = iconStyle.hotSpot.y;
+    const xUnits = iconStyle.hotSpot.xunits;
+    const yUnits = iconStyle.hotSpot.yunits;
+    const iconAnchorXUnits: OlIconAnchorUnits = xUnits === UnitsEnumType.fraction ? 'fraction' : 'pixels';
+    const iconAnchorYUnits: OlIconAnchorUnits = yUnits === UnitsEnumType.fraction ? 'fraction' : 'pixels';
+
+    let anchorOrigin: OlIconOrigin;
+
+    if (xUnits === UnitsEnumType.insetPixels && yUnits === UnitsEnumType.insetPixels) {
+      anchorOrigin = 'top-right';
+    } else if (xUnits === UnitsEnumType.insetPixels) {
+      anchorOrigin = 'bottom-right';
+    } else if (yUnits === UnitsEnumType.insetPixels) {
+      anchorOrigin = 'top-left';
+    } else {
+      anchorOrigin = 'bottom-left';
+    }
+
+    return new OlIcon({
+      anchorOrigin: anchorOrigin,
+      anchor: [iconAnchorX, iconAnchorY],
+      anchorXUnits: iconAnchorXUnits,
+      anchorYUnits: iconAnchorYUnits,
+      crossOrigin: 'anonymous',
+      color: iconColor,
+      rotation: iconRotation,
+      width: iconWidth,
+      height: iconHeight,
+      src: iconSrc,
     });
   }
 }

@@ -1,28 +1,33 @@
-import {AbstractFeatureType, AbstractObjectGroup, AnyURI, AtomAuthor, AtomLink} from '@bioroxx/kmljs';
-import {ExtendedData} from './extended-data';
-import {Region} from './region';
-import {AbstractStyleSelectorGroup} from './abstract-style-selector-group';
-import {AbstractTimePrimitiveGroup} from './abstract-time-primitive-group';
-import {AbstractViewGroup} from './abstract-view-group';
+import {
+  AbstractFeatureType,
+  AbstractObjectGroup,
+  AbstractStyleSelectorGroup,
+  AbstractTimePrimitiveGroup,
+  AbstractViewGroup,
+  AnyURI,
+  AtomAuthor,
+  AtomLink,
+  ExtendedData,
+  Region
+} from '@bioroxx/kmljs';
 import {ListViewItem} from '../list-view-item';
 import BaseLayer from 'ol/layer/Base';
 
 export abstract class AbstractFeatureGroup extends AbstractObjectGroup implements AbstractFeatureType, ListViewItem {
 
-  name?: string;
-  visibility?: boolean;
-  open?: boolean;
+  name: string;
+  visibility: boolean;
+  open: boolean;
   atomAuthor?: AtomAuthor;
   atomLink?: AtomLink;
-  address?: string;
-  //TODO: xal:AddressDetails
-  phoneNumber?: string;
-  snippet?: string;
-  description?: string;
+  address: string;
+  phoneNumber: string;
+  snippet: string;
+  description: string;
   view?: AbstractViewGroup;
   timePrimitive?: AbstractTimePrimitiveGroup;
   styleUrl?: AnyURI;
-  styleSelector?: AbstractStyleSelectorGroup[];
+  styleSelector: AbstractStyleSelectorGroup[];
   region?: Region;
   extendedData?: ExtendedData;
 

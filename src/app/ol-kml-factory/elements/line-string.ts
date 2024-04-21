@@ -1,14 +1,13 @@
-import {CoordinatesType, LineStringType} from '@bioroxx/kmljs';
+import {AltitudeModeGroup, CoordinatesType, LineStringType} from '@bioroxx/kmljs';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
-import {AltitudeModeGroup} from './altitude-mode-group';
 import {OlLineString} from '../helper/ol-types';
 
 export class LineString extends AbstractGeometryGroup implements LineStringType {
 
-  extrude?: boolean;
-  tessellate?: boolean;
-  altitudeMode?: AltitudeModeGroup;
-  coordinates?: CoordinatesType;
+  extrude: boolean;
+  tessellate: boolean;
+  altitudeMode: AltitudeModeGroup;
+  coordinates: CoordinatesType;
 
   override olGeometry?: OlLineString;
 

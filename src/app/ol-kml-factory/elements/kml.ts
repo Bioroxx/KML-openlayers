@@ -1,12 +1,11 @@
-import {KmlType} from '@bioroxx/kmljs';
-import {NetworkLinkControl} from './network-link-control';
+import {KmlType, NetworkLinkControl} from '@bioroxx/kmljs';
 import {AbstractFeatureGroup} from './abstract-feature-group';
 import BaseLayer from 'ol/layer/Base';
 
 
 export class Kml implements KmlType {
 
-  hint?: string;
+  hint: string;
   networkLinkControl?: NetworkLinkControl;
   feature?: AbstractFeatureGroup;
 

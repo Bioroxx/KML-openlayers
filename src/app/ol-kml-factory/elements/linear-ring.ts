@@ -1,14 +1,13 @@
-import {CoordinatesType, LinearRingType} from '@bioroxx/kmljs';
-import {AltitudeModeGroup} from './altitude-mode-group';
+import {AltitudeModeGroup, CoordinatesType, LinearRingType} from '@bioroxx/kmljs';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
 import {LinearRing as OlLinearRing} from 'ol/geom';
 
 export class LinearRing extends AbstractGeometryGroup implements LinearRingType {
 
-  extrude?: boolean;
-  tessellate?: boolean;
-  altitudeMode?: AltitudeModeGroup;
-  coordinates?: CoordinatesType;
+  extrude: boolean;
+  tessellate: boolean;
+  altitudeMode: AltitudeModeGroup;
+  coordinates: CoordinatesType;
 
   override olGeometry?: OlLinearRing;
 

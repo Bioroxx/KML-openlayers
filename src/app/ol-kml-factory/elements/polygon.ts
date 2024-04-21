@@ -1,16 +1,15 @@
-import {PolygonType} from '@bioroxx/kmljs';
+import {AltitudeModeGroup, PolygonType} from '@bioroxx/kmljs';
 import {AbstractGeometryGroup} from './abstract-geometry-group';
-import {AltitudeModeGroup} from './altitude-mode-group';
-import {Boundary} from '../helper/boundary';
 import {OlPolygon} from '../helper/ol-types';
+import {Boundary} from './boundary';
 
 export class Polygon extends AbstractGeometryGroup implements PolygonType {
 
-  extrude?: boolean;
-  tessellate?: boolean;
-  altitudeMode?: AltitudeModeGroup;
+  extrude: boolean;
+  tessellate: boolean;
+  altitudeMode: AltitudeModeGroup;
   outerBoundaryIs?: Boundary;
-  innerBoundaryIs?: Boundary[];
+  innerBoundaryIs: Boundary[];
 
   override olGeometry: OlPolygon;
 
