@@ -11,8 +11,6 @@ import {KMLParser} from '@bioroxx/kmljs';
 import {Kml} from './ol-kml-factory/elements/kml';
 import {OlKmlFactory} from './ol-kml-factory/ol-kml-factory';
 import {KML} from 'ol/format';
-import {BalloonControl} from './ol-kml-factory/helper/balloon-control';
-import {OlSelect} from './ol-kml-factory/helper/ol-types';
 
 @Component({
   selector: 'app-root',
@@ -76,21 +74,6 @@ export class AppComponent implements AfterViewInit {
       featureProjection: 'EPSG:3857'
     });
 
-    console.log(features);
-
-    features.forEach((f) => {
-
-      console.log(f.getProperties());
-
-      console.log('Feature', {
-        keys: f.getKeys(),
-        properties: f.getProperties(),
-        propertiesInternal: f.getPropertiesInternal(),
-        geometry: f.getGeometry()
-      })
-    })
-
-
     const vector = new VectorLayer({
       source: new VectorSource({
         features: features
@@ -102,25 +85,11 @@ export class AppComponent implements AfterViewInit {
 
   removeAdditionalLayersFromMap() {
     const vectorLayers = this.map.getLayers().getArray().filter(l => !(l instanceof TileLayer));
-    const interactions = this.map.getInteractions().getArray().filter((i) => i instanceof OlSelect);
-    const controls = this.map.getControls().getArray().filter((c) => c instanceof BalloonControl);
-
-    console.log('VectorLayers', vectorLayers);
-    console.log('Interactions', interactions);
-    console.log('Controls', controls);
-
     vectorLayers.forEach((l) => this.map.removeLayer(l));
-    interactions.forEach((i) => this.map.removeInteraction(i));
-    controls.forEach((c) => this.map.removeControl(c));
   }
 
   clear() {
     this.removeAdditionalLayersFromMap();
     this.kml = undefined;
-  }
-
-  zoomIntoVienna() {
-    this.map.getView().setCenter(this.viennaCoordinate);
-    this.map.getView().setZoom(12);
   }
 }

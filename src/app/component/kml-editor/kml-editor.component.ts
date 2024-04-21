@@ -15,10 +15,6 @@ export class KmlEditorComponent {
       url: './assets/kml/placemark.kml'
     },
     {
-      name: 'Ground Overlay',
-      url: './assets/kml/ground-overlays.kml'
-    },
-    {
       name: 'Vienna Districts',
       url: './assets/kml/BEZIRKSGRENZEOGD.kml'
     }
