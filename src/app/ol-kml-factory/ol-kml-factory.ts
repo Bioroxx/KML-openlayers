@@ -556,11 +556,11 @@ export class OlKmlFactory extends KMLFactory {
     }
 
     const iconSrc = iconStyle.icon?.href ?? this.DEFAULT_ICON_URL;
-    const iconScale = iconStyle.scale ?? 1.0;
+    const iconScale = iconStyle.scale;
     const iconWidth = this.DEFAULT_ICON_WIDTH * iconScale;
     const iconHeight = this.DEFAULT_ICON_HEIGHT * iconScale;
-    const iconColor = this.parseColor(iconStyle.color, iconStyle.colorMode) ?? this.COLOR_WHITE;
-    const iconRotation = this.degreesToRadians(iconStyle.heading ?? 0.0);
+    const iconColor = this.parseColor(iconStyle.color, iconStyle.colorMode);
+    const iconRotation = this.degreesToRadians(iconStyle.heading);
     const iconAnchorX = iconStyle.hotSpot.x;
     const iconAnchorY = iconStyle.hotSpot.y;
     const xUnits = iconStyle.hotSpot.xunits;
@@ -590,7 +590,7 @@ export class OlKmlFactory extends KMLFactory {
       rotation: iconRotation,
       width: iconWidth,
       height: iconHeight,
-      src: iconSrc,
+      src: iconSrc
     });
   }
 }
