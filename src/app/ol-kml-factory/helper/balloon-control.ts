@@ -10,12 +10,12 @@ export class BalloonControl extends OlControl {
 
     if (style.displayMode === DisplayModeEnumType.default) {
 
-      let inlineStyle = 'right: 0; margin: 1.0rem; padding: 1.0rem; border: 1px solid grey; height: 50%; width: 30%; overflow: auto; ';
-      inlineStyle += 'background-color: ' + (style.bgColor ? colorTypeToCSSRGBAString(style.bgColor) + '; ' : 'white; ');
-      inlineStyle += 'color: ' + (style.textColor ? colorTypeToCSSRGBAString(style.textColor) + '; ' : 'black; ');
+      let inlineStyle = 'right: 0; margin: 1.0rem; padding: 1.0rem; border: 1px solid grey; max-height: 50%; width: 30%; overflow: auto; ';
+      inlineStyle += 'background-color: ' + colorTypeToCSSRGBAString(style.bgColor) + '; ';
+      inlineStyle += 'color: ' + colorTypeToCSSRGBAString(style.textColor) + '; ';
 
       element.className = 'ol-unselectable ol-control';
-      element.innerHTML = style.text ?? '';
+      element.innerHTML = style.text;
       element.setAttribute('style', inlineStyle);
     }
 

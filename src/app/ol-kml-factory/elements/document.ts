@@ -17,6 +17,10 @@ export class Document extends AbstractContainerGroup implements DocumentType {
     this.feature = documentType.feature;
   }
 
+  get type() {
+    return 'document';
+  }
+
   get label() {
     return this.name;
   }
@@ -25,13 +29,13 @@ export class Document extends AbstractContainerGroup implements DocumentType {
     return this;
   }
 
-  get type() {
-    return 'document';
-  }
-
   get children() {
     return this.feature;
   };
+
+  get expanded() {
+    return this.open;
+  }
 
   override get isVisible(): boolean {
     return this.feature.some(f => f.isVisible);

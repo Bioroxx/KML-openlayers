@@ -14,6 +14,10 @@ export class Folder extends AbstractContainerGroup implements FolderType {
     this.feature = folderType.feature;
   }
 
+  get type() {
+    return 'folder';
+  }
+
   get label() {
     return this.name;
   }
@@ -22,13 +26,13 @@ export class Folder extends AbstractContainerGroup implements FolderType {
     return this;
   }
 
-  get type() {
-    return 'folder';
-  }
-
   get children() {
     return this.feature;
   };
+
+  get expanded() {
+    return this.open;
+  }
 
   override get isVisible(): boolean {
     return this.feature.some(f => f.isVisible);

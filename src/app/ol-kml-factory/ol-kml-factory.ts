@@ -137,21 +137,23 @@ export class OlKmlFactory extends KMLFactory {
 
     // Create enriched BalloonStyleType
     let balloonStyle: BalloonStyleType | undefined = undefined;
-    if (placemark.description) {
-      balloonStyle = {
-        id: '',
-        targetId: '',
-        bgColor: normalStyle?.balloonStyle?.bgColor ?? 'ffffffff',
-        textColor: normalStyle?.balloonStyle?.textColor ?? 'ff000000',
-        displayMode: normalStyle?.balloonStyle?.displayMode ?? DisplayModeEnumType.default,
-        text: this.getEntityReplacedString(placemark.description, placemark),
-      };
-    } else if (normalStyle?.balloonStyle?.text) {
+
+    if (normalStyle?.balloonStyle) {
       balloonStyle = {
         ...normalStyle.balloonStyle,
         text: this.getEntityReplacedString(normalStyle.balloonStyle.text, placemark)
       };
+    } else {
+      balloonStyle = {
+        id: '',
+        targetId: '',
+        bgColor: 'ffffffff',
+        textColor: 'ff000000',
+        displayMode: DisplayModeEnumType.default,
+        text: placemark.description,
+      };
     }
+
     feature.set('balloonStyle', balloonStyle);
 
     const vectorSource = new OlVectorSource({features: [feature]});

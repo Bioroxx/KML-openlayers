@@ -3,6 +3,7 @@
 >
   <Document>
     <name>Wiener Gemeindebezirke</name>
+    <open>true</open>
     <description>This is the documents description</description>
     <LookAt>
       <longitude>16.37449601546497</longitude>

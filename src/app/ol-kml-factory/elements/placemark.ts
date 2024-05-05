@@ -15,6 +15,10 @@ export class Placemark extends AbstractFeatureGroup implements PlacemarkType {
     this.geometry = placemarkType.geometry;
   }
 
+  get type() {
+    return 'placemark';
+  }
+
   get label() {
     return this.name;
   }
@@ -23,13 +27,13 @@ export class Placemark extends AbstractFeatureGroup implements PlacemarkType {
     return this;
   }
 
-  get type() {
-    return 'placemark';
-  }
-
   get children() {
     return [];
   };
+
+  get expanded() {
+    return false;
+  }
 
   override get isVisible(): boolean {
     return this.olLayer.getVisible();
