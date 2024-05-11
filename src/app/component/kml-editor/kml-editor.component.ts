@@ -16,7 +16,7 @@ export class KmlEditorComponent {
     },
     {
       name: 'Vienna Districts',
-      url: './assets/kml/BEZIRKSGRENZEOGD.kml'
+      url: './assets/kml/vienna-districts.kml'
     }
   ];
 
@@ -45,6 +45,6 @@ export class KmlEditorComponent {
     }
 
     this.kmlFileService.getFileContentString(kmlFile.url)
-        .subscribe((content) => this.editorContent = content);
+      .subscribe((content) => this.editorContent = content);
   }
 }

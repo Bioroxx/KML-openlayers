@@ -42,8 +42,8 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.kmlFileService.getFileContentString('/assets/kml/BEZIRKSGRENZEOGD.kml')
-        .subscribe((v) => this.importKml(v));
+    this.kmlFileService.getFileContentString('/assets/kml/vienna-districts.kml')
+      .subscribe((v) => this.importKml(v));
   }
 
   importKml(kmlString: string) {

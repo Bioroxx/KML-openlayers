@@ -37,6 +37,10 @@ export class Document extends AbstractContainerGroup implements DocumentType {
     return this.open;
   }
 
+  set expanded(value: boolean) {
+    this.open = value;
+  }
+
   override get isVisible(): boolean {
     return this.feature.some(f => f.isVisible);
   }
