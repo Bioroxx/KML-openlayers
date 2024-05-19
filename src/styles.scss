@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+// Import PrimeNG CSS, Theme and Icons
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+// Import PrimeFlex
+@import "primeflex/primeflex.css";
+
+// Import custom SCSS files
+@import "./scss/layout";
+
+// Custom global CSS
+:root {
+  font-size: 14px;
+}
+
+body {
+  margin: 0;
+  background-color: whitesmoke;
+}

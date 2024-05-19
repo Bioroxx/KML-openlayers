@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2"
+     hint="This is a hint">
+  <Placemark>
+    <name>Stephansdom</name>
+    <description>This is a placemark at the Stephansdom in vienna.
+    </description>
+    <Point>
+      <coordinates>16.373133781480494,48.20849775537559,0</coordinates>
+    </Point>
+  </Placemark>
+</kml>

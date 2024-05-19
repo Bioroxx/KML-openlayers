@@ -1,1 +1,33 @@
-<h1>KML-OpenLayers</h1>
+<p-toolbar>
+  <div class="p-toolbar-group-start">
+    <span>KML-OpenLayers</span>
+  </div>
+</p-toolbar>
+<div class="p-3 grid">
+
+  <div class="sm:col-12 md:col-4">
+    <p-card header="List View" styleClass="h-full">
+      <div class="w-full flex flex-column justify-content-between" style="height: 70vh">
+        <app-list-view [kml]="kml"></app-list-view>
+        <p-button (onClick)="clear()">Clear</p-button>
+      </div>
+    </p-card>
+  </div>
+
+  <div class="sm:col-12 md:col-8">
+    <p-card header="Map">
+      <div class="map-container">
+        <app-open-layers-map [map]="map" class="h-full w-full"></app-open-layers-map>
+      </div>
+    </p-card>
+  </div>
+
+  <div class="col-12">
+    <p-card header="KML Editor">
+      <app-kml-editor
+          (loadKmlWithOpenLayers)="importWithOpenLayers($event)"
+          (loadKmlWithPrototype)="importWithKmljs($event)">
+      </app-kml-editor>
+    </p-card>
+  </div>
+</div>
