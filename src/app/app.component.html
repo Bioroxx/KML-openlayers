@@ -25,8 +25,8 @@
   <div class="col-12">
     <p-card header="KML Editor">
       <app-kml-editor
-          (loadKmlWithOpenLayers)="importKmlWithOpenLayersDefaultImplementation($event)"
-          (loadKmlWithPrototype)="importKml($event)">
+          (loadKmlWithOpenLayers)="importWithOpenLayers($event)"
+          (loadKmlWithPrototype)="importWithKmljs($event)">
       </app-kml-editor>
     </p-card>
   </div>

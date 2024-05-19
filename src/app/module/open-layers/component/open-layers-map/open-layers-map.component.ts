@@ -1,7 +1,7 @@
 import {AfterViewInit, Component, ElementRef, Input, ViewChild} from '@angular/core';
 import Map from 'ol/Map';
 import {OlFeature} from '../../../../ol-kml-factory/helper/ol-types';
-import {BalloonControl} from '../../../../ol-kml-factory/helper/balloon-control';
+import {BalloonControl} from '../../../../ol-kml-factory/balloon-control';
 
 @Component({
   selector: 'app-open-layers-map',

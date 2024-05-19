@@ -19,6 +19,7 @@ import {KML} from 'ol/format';
 })
 export class AppComponent implements AfterViewInit {
 
+  private readonly defaultDatasetFilePath = '/assets/kml/vienna-districts.kml';
   private readonly viennaCoordinate = fromLonLat([16.363449, 48.210033]);
 
   map: Map;
@@ -42,11 +43,11 @@ export class AppComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.kmlFileService.getFileContentString('/assets/kml/vienna-districts.kml')
-      .subscribe((v) => this.importKml(v));
+    this.kmlFileService.getFileContentString(this.defaultDatasetFilePath)
+        .subscribe((v) => this.importWithKmljs(v));
   }
 
-  importKml(kmlString: string) {
+  importWithKmljs(kmlString: string) {
 
     this.clear();
 
@@ -64,7 +65,7 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  importKmlWithOpenLayersDefaultImplementation(kmlString: string) {
+  importWithOpenLayers(kmlString: string) {
 
     this.clear();
 

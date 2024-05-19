@@ -1,6 +1,6 @@
-import {OlControl} from './ol-types';
+import {OlControl} from './helper/ol-types';
 import {BalloonStyleType, DisplayModeEnumType} from '@bioroxx/kmljs';
-import {colorTypeToCSSRGBAString} from './util';
+import {colorTypeToCSSRGBAString} from './helper/util';
 
 export class BalloonControl extends OlControl {
 

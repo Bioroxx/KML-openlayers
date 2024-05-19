@@ -74,7 +74,8 @@
       </Pair>
     </StyleMap>
     <Folder>
-      <name>District Borders</name>
+      <name>Borders</name>
+      <open>true</open>
       <LookAt>
         <longitude>-167.43183508364234</longitude>
         <latitude>-55.75367086771146</latitude>
@@ -87,7 +88,39 @@
       <Placemark id="BEZIRKSGRENZEOGD.13131">
         <name>1st district</name>
         <description>
-          1st district of vienna
+          &lt;h4&gt;BEZIRKSGRENZEOGD&lt;/h4&gt;
+          &lt;ul class="textattributes"&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;NAMEK&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;Innere Stadt&lt;/span&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;BEZNR&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;1&lt;/span&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;BEZ_RZ&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;I&lt;/span&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;NAMEK_NUM&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;1., Innere Stadt&lt;/span&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;NAMEK_RZ&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;I. Innere Stadt&lt;/span&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;NAMEG&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;INNERE STADT&lt;/span&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;LABEL&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;I.&lt;/span&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;BEZ&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;01&lt;/span&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;DISTRICT_CODE&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;1010&lt;/span&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;STATAUSTRIA_BEZ_CODE&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;901&lt;/span&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;STATAUSTRIA_GEM_CODE&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;90101&lt;/span&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;FLAECHE&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;2868772.3041&lt;/span&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;UMFANG&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;6972.78&lt;/span&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;AKT_TIMESTAMP&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;3/12/24, 12:00 AM&lt;/span&gt;&lt;/li&gt;
+          &lt;li&gt;&lt;strong&gt;&lt;span class="atr-name"&gt;SE_SDO_ROWID&lt;/span&gt;:&lt;/strong&gt; &lt;span
+          class="atr-value"&gt;13462&lt;/span&gt;&lt;/li&gt;
+          &lt;/ul&gt;
         </description>
         <LookAt>
           <longitude>16.37003829955367</longitude>
@@ -4885,7 +4918,7 @@
           <range>2812.769689553384</range>
           <altitudeMode>clampToGround</altitudeMode>
         </LookAt>
-        <styleUrl>#default_style</styleUrl>
+        <styleUrl>#highlight_style</styleUrl>
         <MultiGeometry>
           <Point>
             <coordinates>16.355926959050105,48.18679501144676</coordinates>
@@ -6126,7 +6159,7 @@
           <range>2309.1738694544856</range>
           <altitudeMode>clampToGround</altitudeMode>
         </LookAt>
-        <styleUrl>#default_style</styleUrl>
+        <styleUrl>#highlight_style</styleUrl>
         <MultiGeometry>
           <Point>
             <coordinates>16.346954456057457,48.20251339022389</coordinates>
@@ -7946,7 +7979,7 @@
           <range>11032.955218856452</range>
           <altitudeMode>clampToGround</altitudeMode>
         </LookAt>
-        <styleUrl>#default_style</styleUrl>
+        <styleUrl>#highlight_style</styleUrl>
         <MultiGeometry>
           <Point>
             <coordinates>16.387621393822442,48.15209985378868</coordinates>
@@ -18433,7 +18466,7 @@
           <range>13013.269976627013</range>
           <altitudeMode>clampToGround</altitudeMode>
         </LookAt>
-        <styleUrl>#default_style</styleUrl>
+        <styleUrl>#highlight_style</styleUrl>
         <MultiGeometry>
           <Point>
             <coordinates>16.41116412046885,48.28118729218011</coordinates>
